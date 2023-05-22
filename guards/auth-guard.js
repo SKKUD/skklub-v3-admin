@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import PropTypes from "prop-types";
 import { useAuthContext } from "@/contexts/auth-context";
 
 export const AuthGuard = (props) => {
@@ -50,8 +49,4 @@ export const AuthGuard = (props) => {
   // authenticated / authorized.
 
   return children;
-};
-
-AuthGuard.propTypes = {
-  children: PropTypes.node,
 };

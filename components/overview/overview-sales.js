@@ -10,7 +10,7 @@ import {
   SvgIcon,
 } from "@mui/material";
 import { alpha, useTheme } from "@mui/material/styles";
-import { Chart } from "@/components/chart";
+import { Chart } from "src/components/chart";
 
 const useChartOptions = () => {
   const theme = useTheme();

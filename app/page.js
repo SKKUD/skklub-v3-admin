@@ -1,3 +1,11 @@
+"use client";
+
+import { Layout } from "@/layouts/dashboard/layout";
+
 export default function Home() {
-  return <div>hello world</div>;
+  return (
+    <Layout>
+      <div>hello world</div>
+    </Layout>
+  );
 }

@@ -7,7 +7,6 @@ import {
   useReducer,
   useRef,
 } from "react";
-import PropTypes from "prop-types";
 
 const HANDLERS = {
   INITIALIZE: "INITIALIZE",
@@ -180,10 +179,6 @@ export const AuthProvider = (props) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-AuthProvider.propTypes = {
-  children: PropTypes.node,
 };
 
 export const AuthConsumer = AuthContext.Consumer;

@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import BellIcon from "@heroicons/react/24/solid/BellIcon";
 import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import Bars3Icon from "@heroicons/react/24/solid/Bars3Icon";
@@ -107,8 +106,4 @@ export const TopNav = (props) => {
       />
     </>
   );
-};
-
-TopNav.propTypes = {
-  onNavOpen: PropTypes.func,
 };
