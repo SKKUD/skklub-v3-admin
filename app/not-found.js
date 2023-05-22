@@ -1,5 +1,4 @@
 "use client";
-
 import Head from "next/head";
 import NextLink from "next/link";
 import ArrowLeftIcon from "@heroicons/react/24/solid/ArrowLeftIcon";
@@ -69,25 +68,6 @@ const Page = () => (
   </>
 );
 
-import { useEffect } from "react";
-
-export default function Error({ error, reset }) {
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error);
-  }, [error]);
-
-  return (
-    <div>
-      <h2>Something went wrong!</h2>
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-      >
-        Try again
-      </button>
-    </div>
-  );
+export default function NotFound() {
+  return <Page />;
 }
