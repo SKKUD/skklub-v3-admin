@@ -1,4 +1,4 @@
-import NextLink from "next/link";
+import Link from "next/link";
 import { Box, ButtonBase } from "@mui/material";
 
 export const SideNavItem = (props) => {
@@ -12,7 +12,7 @@ export const SideNavItem = (props) => {
           target: "_blank",
         }
       : {
-          component: NextLink,
+          component: Link,
           href: path,
         }
     : {};

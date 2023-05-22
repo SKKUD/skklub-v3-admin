@@ -1,4 +1,4 @@
-import NextLink from "next/link";
+import Link from "next/link";
 import { Box, Typography, Unstable_Grid2 as Grid } from "@mui/material";
 import { Logo } from "@/components/logo";
 
@@ -37,7 +37,7 @@ export const AuthLayout = (props) => {
             }}
           >
             <Box
-              component={NextLink}
+              component={Link}
               href="/"
               sx={{
                 display: "inline-flex",

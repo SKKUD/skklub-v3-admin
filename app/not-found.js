@@ -1,6 +1,6 @@
 "use client";
 import Head from "next/head";
-import NextLink from "next/link";
+import Link from "next/link";
 import ArrowLeftIcon from "@heroicons/react/24/solid/ArrowLeftIcon";
 import { Box, Button, Container, SvgIcon, Typography } from "@mui/material";
 
@@ -50,7 +50,7 @@ const Page = () => (
             Whichever it is, try using the navigation
           </Typography>
           <Button
-            component={NextLink}
+            component={Link}
             href="/"
             startIcon={
               <SvgIcon fontSize="small">

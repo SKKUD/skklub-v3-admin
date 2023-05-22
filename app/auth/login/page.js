@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import Head from "next/head";
-import NextLink from "next/link";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -11,7 +11,7 @@ import {
   Box,
   Button,
   FormHelperText,
-  Link,
+  Link as MUILink,
   Stack,
   Tab,
   Tabs,
@@ -85,14 +85,14 @@ const Page = () => {
               <Typography variant="h4">Login</Typography>
               <Typography color="text.secondary" variant="body2">
                 Don&apos;t have an account? &nbsp;
-                <Link
-                  component={NextLink}
+                <MUILink
+                  component={Link}
                   href="/auth/register"
                   underline="hover"
                   variant="subtitle2"
                 >
                   Register
-                </Link>
+                </MUILink>
               </Typography>
             </Stack>
             <Tabs onChange={handleMethodChange} sx={{ mb: 3 }} value={method}>

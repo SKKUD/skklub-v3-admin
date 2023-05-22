@@ -1,4 +1,4 @@
-import NextLink from "next/link";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ArrowTopRightOnSquareIcon from "@heroicons/react/24/solid/ArrowTopRightOnSquareIcon";
 import ChevronUpDownIcon from "@heroicons/react/24/solid/ChevronUpDownIcon";
@@ -43,7 +43,7 @@ export const SideNav = (props) => {
       >
         <Box sx={{ p: 3 }}>
           <Box
-            component={NextLink}
+            component={Link}
             href="/"
             sx={{
               display: "inline-flex",
