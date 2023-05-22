@@ -35,7 +35,7 @@ const Page = () => (
           >
             <img
               alt="Under development"
-              src="/assets/errors/error-404.png"
+              src="/vercel.svg"
               style={{
                 display: "inline-block",
                 maxWidth: "100%",

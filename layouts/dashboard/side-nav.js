@@ -137,7 +137,7 @@ export const SideNav = (props) => {
               },
             }}
           >
-            <img alt="Go to pro" src="/assets/devias-kit-pro.png" />
+            <img alt="Go to pro" src="/vercel.svg" />
           </Box>
           <Button
             component="a"
