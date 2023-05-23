@@ -36,74 +36,74 @@ export const CustomersTable = (props) => {
 
   return (
     <Card>
-      <Scrollbar>
-        <Box sx={{ minWidth: 800 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedAll}
-                    indeterminate={selectedSome}
-                    onChange={(event) => {
-                      if (event.target.checked) {
-                        onSelectAll?.();
-                      } else {
-                        onDeselectAll?.();
-                      }
-                    }}
-                  />
-                </TableCell>
-                <TableCell>제목</TableCell>
-                <TableCell>글쓴이</TableCell>
-                <TableCell>작성일지</TableCell>
-                {/* <TableCell>Phone</TableCell>
+      {/* <Scrollbar> */}
+      <Box sx={{ minWidth: 800 }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  checked={selectedAll}
+                  indeterminate={selectedSome}
+                  onChange={(event) => {
+                    if (event.target.checked) {
+                      onSelectAll?.();
+                    } else {
+                      onDeselectAll?.();
+                    }
+                  }}
+                />
+              </TableCell>
+              <TableCell>제목</TableCell>
+              <TableCell>글쓴이</TableCell>
+              <TableCell>작성일지</TableCell>
+              {/* <TableCell>Phone</TableCell>
                 <TableCell>Signed Up</TableCell> */}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {items.map((customer) => {
-                const isSelected = selected.includes(customer.id);
-                const createdAt = format(customer.createdAt, "dd/MM/yyyy");
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {items.map((customer) => {
+              const isSelected = selected.includes(customer.id);
+              const createdAt = format(customer.createdAt, "dd/MM/yyyy");
 
-                return (
-                  <TableRow hover key={customer.id} selected={isSelected}>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        checked={isSelected}
-                        onChange={(event) => {
-                          if (event.target.checked) {
-                            onSelectOne?.(customer.id);
-                          } else {
-                            onDeselectOne?.(customer.id);
-                          }
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        {/* <Avatar src={customer.avatar}>
+              return (
+                <TableRow hover key={customer.id} selected={isSelected}>
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      checked={isSelected}
+                      onChange={(event) => {
+                        if (event.target.checked) {
+                          onSelectOne?.(customer.id);
+                        } else {
+                          onDeselectOne?.(customer.id);
+                        }
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Stack alignItems="center" direction="row" spacing={2}>
+                      {/* <Avatar src={customer.avatar}>
                           {getInitials(customer.name)}
                         </Avatar> */}
-                        <Typography variant="subtitle2">
-                          {customer.name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>
-                      {customer.address.city}, {customer.address.state},{" "}
-                      {customer.address.country}
-                    </TableCell>
-                    {/* <TableCell>{customer.phone}</TableCell>
+                      <Typography variant="subtitle2">
+                        {customer.name}
+                      </Typography>
+                    </Stack>
+                  </TableCell>
+                  <TableCell>{customer.email}</TableCell>
+                  <TableCell>
+                    {customer.address.city}, {customer.address.state},{" "}
+                    {customer.address.country}
+                  </TableCell>
+                  {/* <TableCell>{customer.phone}</TableCell>
                     <TableCell>{createdAt}</TableCell> */}
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </Box>
-      </Scrollbar>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </Box>
+      {/* </Scrollbar> */}
       <TablePagination
         component="div"
         count={count}
