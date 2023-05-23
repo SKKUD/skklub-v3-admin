@@ -15,7 +15,6 @@ import {
   Typography,
 } from "@mui/material";
 import { useSelection } from "@/hooks/use-selection";
-import { Layout as DashboardLayout } from "@/layouts/dashboard/layout";
 import { CustomersTable } from "@/sections/customer/customers-table";
 import { CustomersSearch } from "@/sections/customer/customers-search";
 import { applyPagination } from "@/utils/apply-pagination";
@@ -194,9 +193,9 @@ const Page = () => {
 
   return (
     <>
-      <Head>
+      {/* <Head>
         <title>Customers | Devias Kit</title>
-      </Head>
+      </Head> */}
       <Box
         component="main"
         sx={{
@@ -209,7 +208,7 @@ const Page = () => {
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
                 <Typography variant="h4">Customers</Typography>
-                <Stack alignItems="center" direction="row" spacing={1}>
+                {/* <Stack alignItems="center" direction="row" spacing={1}>
                   <Button
                     color="inherit"
                     startIcon={
@@ -230,7 +229,7 @@ const Page = () => {
                   >
                     Export
                   </Button>
-                </Stack>
+                </Stack> */}
               </Stack>
               <div>
                 <Button

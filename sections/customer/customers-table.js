@@ -54,11 +54,11 @@ export const CustomersTable = (props) => {
                     }}
                   />
                 </TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Location</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell>Signed Up</TableCell>
+                <TableCell>제목</TableCell>
+                <TableCell>글쓴이</TableCell>
+                <TableCell>작성일지</TableCell>
+                {/* <TableCell>Phone</TableCell>
+                <TableCell>Signed Up</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -82,9 +82,9 @@ export const CustomersTable = (props) => {
                     </TableCell>
                     <TableCell>
                       <Stack alignItems="center" direction="row" spacing={2}>
-                        <Avatar src={customer.avatar}>
+                        {/* <Avatar src={customer.avatar}>
                           {getInitials(customer.name)}
-                        </Avatar>
+                        </Avatar> */}
                         <Typography variant="subtitle2">
                           {customer.name}
                         </Typography>
@@ -95,8 +95,8 @@ export const CustomersTable = (props) => {
                       {customer.address.city}, {customer.address.state},{" "}
                       {customer.address.country}
                     </TableCell>
-                    <TableCell>{customer.phone}</TableCell>
-                    <TableCell>{createdAt}</TableCell>
+                    {/* <TableCell>{customer.phone}</TableCell>
+                    <TableCell>{createdAt}</TableCell> */}
                   </TableRow>
                 );
               })}
