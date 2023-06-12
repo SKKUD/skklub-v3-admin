@@ -6,7 +6,7 @@ export const CustomersSearch = () => (
     <OutlinedInput
       defaultValue=""
       fullWidth
-      placeholder="Search customer"
+      placeholder="동아리명을 입력하세요."
       startAdornment={(
         <InputAdornment position="start">
           <SvgIcon

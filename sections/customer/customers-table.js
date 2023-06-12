@@ -1,6 +1,4 @@
-import { format } from "date-fns";
 import {
-  Avatar,
   Box,
   Card,
   Checkbox,
@@ -13,8 +11,6 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { Scrollbar } from "@/components/scrollbar";
-import { getInitials } from "@/utils/get-initials";
 
 export const CustomersTable = (props) => {
   const {
@@ -36,7 +32,6 @@ export const CustomersTable = (props) => {
 
   return (
     <Card>
-      <Scrollbar>
         <Box sx={{ minWidth: 800 }}>
           <Table>
             <TableHead>
@@ -54,17 +49,19 @@ export const CustomersTable = (props) => {
                     }}
                   />
                 </TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Location</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell>Signed Up</TableCell>
+                <TableCell>상태</TableCell>
+                <TableCell>캠퍼스</TableCell>
+                <TableCell>모임명</TableCell>
+                <TableCell>대분류</TableCell>
+                <TableCell>중분류</TableCell>
+                <TableCell>소분류</TableCell>
+                <TableCell>대표자</TableCell>
+                <TableCell>연락처</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {items.map((customer) => {
                 const isSelected = selected.includes(customer.id);
-                const createdAt = format(customer.createdAt, "dd/MM/yyyy");
 
                 return (
                   <TableRow hover key={customer.id} selected={isSelected}>
@@ -81,29 +78,28 @@ export const CustomersTable = (props) => {
                       />
                     </TableCell>
                     <TableCell>
+                      {customer.state.public ? "공개" : "비공개"}/
+                      {customer.state.revise ? "수정가능" : "수정불가능"}
+                    </TableCell>
+                    <TableCell>{customer.campus}</TableCell>
+                    <TableCell>
                       <Stack alignItems="center" direction="row" spacing={2}>
-                        <Avatar src={customer.avatar}>
-                          {getInitials(customer.name)}
-                        </Avatar>
                         <Typography variant="subtitle2">
-                          {customer.name}
+                          {customer.cname}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>
-                      {customer.address.city}, {customer.address.state},{" "}
-                      {customer.address.country}
-                    </TableCell>
-                    <TableCell>{customer.phone}</TableCell>
-                    <TableCell>{createdAt}</TableCell>
+                    <TableCell>{customer.category1}</TableCell>
+                    <TableCell>{customer.category2}</TableCell>
+                    <TableCell>{customer.category3}</TableCell>
+                    <TableCell>{customer.president_name}</TableCell>
+                    <TableCell>{customer.president_contact}</TableCell>
                   </TableRow>
                 );
               })}
             </TableBody>
           </Table>
         </Box>
-      </Scrollbar>
       <TablePagination
         component="div"
         count={count}

@@ -19,8 +19,8 @@ export const items = [
     )
   },
   {
-    title: 'Customers',
-    path: '/customers',
+    title: '동아리 관리',
+    path: '/clubs',
     icon: (
       <SvgIcon fontSize="small">
         <UsersIcon />
