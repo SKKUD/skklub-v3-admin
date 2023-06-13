@@ -85,6 +85,7 @@ export function createComponents(config) {
         },
       },
     },
+
     MuiCssBaseline: {
       styleOverrides: {
         "*": {

@@ -133,6 +133,7 @@ export const CustomersTable = (props) => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={{overflow: "auto",}}
       >
         <ClubInfoModal cid={clubId} />
       </Modal>
