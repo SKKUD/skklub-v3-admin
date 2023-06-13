@@ -1,3 +1,5 @@
+"use client";
+import React from "react";
 import {
   Box,
   Card,
@@ -10,7 +12,10 @@ import {
   TablePagination,
   TableRow,
   Typography,
+  Modal,
 } from "@mui/material";
+import styled from "@emotion/styled";
+import ClubInfoModal from "./modal-clubinfo";
 
 export const CustomersTable = (props) => {
   const {
@@ -29,9 +34,17 @@ export const CustomersTable = (props) => {
 
   const selectedSome = selected.length > 0 && selected.length < items.length;
   const selectedAll = items.length > 0 && selected.length === items.length;
+  const [open, setOpen] = React.useState(false);
+  const [clubId , setClubId] = React.useState('');
+  const handleOpen = (cid) => {
+    setOpen(true);
+    setClubId(cid);
+  };
+  const handleClose = () => setOpen(false);
 
   return (
-    <Card>
+    <>
+      <Card>
         <Box sx={{ minWidth: 800 }}>
           <Table>
             <TableHead>
@@ -64,7 +77,12 @@ export const CustomersTable = (props) => {
                 const isSelected = selected.includes(customer.id);
 
                 return (
-                  <TableRow hover key={customer.id} selected={isSelected}>
+                  <TableRow
+                    hover
+                    key={customer.id}
+                    selected={isSelected}
+                    onClick={() => handleOpen(customer.id)}
+                  >
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={isSelected}
@@ -100,15 +118,24 @@ export const CustomersTable = (props) => {
             </TableBody>
           </Table>
         </Box>
-      <TablePagination
-        component="div"
-        count={count}
-        onPageChange={onPageChange}
-        onRowsPerPageChange={onRowsPerPageChange}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={[5, 10, 25]}
-      />
-    </Card>
+        <TablePagination
+          component="div"
+          count={count}
+          onPageChange={onPageChange}
+          onRowsPerPageChange={onRowsPerPageChange}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          rowsPerPageOptions={[5, 10, 25]}
+        />
+      </Card>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ClubInfoModal cid={clubId} />
+      </Modal>
+    </>
   );
 };
