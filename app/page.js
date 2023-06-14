@@ -9,6 +9,13 @@ import { OverviewLatestProducts } from "@/components/overview/overview-latest-pr
 import { OverviewTasksProgress } from "@/components/overview/overview-tasks-progress";
 import { OverviewTotalCustomers } from "@/components/overview/overview-total-customers";
 import { OverviewTotalProfit } from "@/components/overview/overview-total-profit";
+import styled from "@emotion/styled";
+
+const Test = styled.div`
+  width: 100px;
+  height: 100px;
+  background-color: black;
+`;
 
 const now = new Date();
 
@@ -25,6 +32,7 @@ function Page() {
           py: 8,
         }}
       >
+        <Test />
         <Container maxWidth="xl">
           <Grid container spacing={3}>
             <Grid xs={12} sm={6} lg={3}>
