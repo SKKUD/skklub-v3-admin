@@ -15,6 +15,7 @@ export function createPalette() {
     background: {
       default: "#151717",
       paper: "rgba(48, 48, 48, 1)",
+      darker: "#252525"
     },
     divider: "rgba(220, 220, 220, 0.5)",
     error,
