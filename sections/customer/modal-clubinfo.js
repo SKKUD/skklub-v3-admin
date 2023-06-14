@@ -15,8 +15,8 @@ import {
   Input,
 } from "@mui/material";
 import styled from "@emotion/styled";
-import CloseIcon from '@mui/icons-material/Close';
-import SaveAsIcon from '@mui/icons-material/SaveAs';
+import CloseIcon from "@mui/icons-material/Close";
+import SaveAsIcon from "@mui/icons-material/SaveAs";
 
 const StyledBox = styled(Box)({
   position: "absolute",
@@ -28,10 +28,12 @@ const StyledBox = styled(Box)({
   borderRadius: "10px",
   boxShadow: 24,
   padding: "20px",
+  paddingBottom: "40px",
 
   "@media (max-width: 425px)": {
     width: "90%",
   },
+  marginBottom: "20px",
 });
 
 const StyledHeader = styled(Typography)({
@@ -96,11 +98,10 @@ const Label = styled(Box)`
 `;
 
 const SaveBtn = styled(Button)`
-    position: absolute;
-    bottom: 20px;
-    right: 60px;
-    margin-top: 30px;
-`
+  position: absolute;
+  bottom: 10px;
+  right: 60px;
+`;
 
 const clubInfo = {
   cid: 63,
@@ -137,7 +138,9 @@ const ClubInfoModal = ({ cid, handleClose }) => {
 
   return (
     <StyledBox>
-      <CloseBtn onClick={handleClose}><CloseIcon/></CloseBtn>
+      <CloseBtn onClick={handleClose}>
+        <CloseIcon />
+      </CloseBtn>
       <StyledHeader variant="h3">
         <b>{clubInfo.cname}</b>의 상세 정보
       </StyledHeader>
@@ -291,7 +294,9 @@ const ClubInfoModal = ({ cid, handleClose }) => {
           />
         </Box>
       </InfoWrap>
-      <SaveBtn variant="contained" ><SaveAsIcon ml="5px"/> 저장</SaveBtn>
+      <SaveBtn variant="contained">
+        <SaveAsIcon ml="5px" /> 저장
+      </SaveBtn>
     </StyledBox>
   );
 };

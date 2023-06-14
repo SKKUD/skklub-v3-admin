@@ -11,12 +11,6 @@ import { OverviewTotalCustomers } from "@/components/overview/overview-total-cus
 import { OverviewTotalProfit } from "@/components/overview/overview-total-profit";
 import styled from "@emotion/styled";
 
-const Test = styled.div`
-  width: 100px;
-  height: 100px;
-  background-color: black;
-`;
-
 const now = new Date();
 
 function Page() {
@@ -32,7 +26,6 @@ function Page() {
           py: 8,
         }}
       >
-        <Test />
         <Container maxWidth="xl">
           <Grid container spacing={3}>
             <Grid xs={12} sm={6} lg={3}>
