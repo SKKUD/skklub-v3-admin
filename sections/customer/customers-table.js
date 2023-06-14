@@ -135,7 +135,7 @@ export const CustomersTable = (props) => {
         aria-describedby="modal-modal-description"
         sx={{overflow: "auto",}}
       >
-        <ClubInfoModal cid={clubId} />
+        <ClubInfoModal cid={clubId} handleClose={handleClose}/>
       </Modal>
     </>
   );

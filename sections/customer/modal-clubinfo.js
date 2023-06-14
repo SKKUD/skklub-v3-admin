@@ -15,10 +15,12 @@ import {
   Input,
 } from "@mui/material";
 import styled from "@emotion/styled";
+import CloseIcon from '@mui/icons-material/Close';
+import SaveAsIcon from '@mui/icons-material/SaveAs';
 
 const StyledBox = styled(Box)({
   position: "absolute",
-  top: "100px",
+  top: "50px",
   left: "50%",
   transform: "translate(-50%, 0)",
   width: "800px",
@@ -42,6 +44,19 @@ const StyledHeader = styled(Typography)({
     color: "#80a4ff",
   },
 });
+
+const CloseBtn = styled(Button)`
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  font-size: 24px;
+  font-weight: 200;
+  border-radius: 36px;
+  width: 60px;
+  height: 60px;
+  color: #888;
+  text-align: center;
+`;
 
 const Warn = styled(Box)`
   width: 90%;
@@ -80,6 +95,13 @@ const Label = styled(Box)`
   border-radius: 10px;
 `;
 
+const SaveBtn = styled(Button)`
+    position: absolute;
+    bottom: 20px;
+    right: 60px;
+    margin-top: 30px;
+`
+
 const clubInfo = {
   cid: 63,
   cname: "라켓챌린지",
@@ -110,11 +132,12 @@ const clubInfo = {
   update: "2023-06-12 18:43",
 };
 
-const ClubInfoModal = ({ cid }) => {
+const ClubInfoModal = ({ cid, handleClose }) => {
   console.log(cid);
 
   return (
     <StyledBox>
+      <CloseBtn onClick={handleClose}><CloseIcon/></CloseBtn>
       <StyledHeader variant="h3">
         <b>{clubInfo.cname}</b>의 상세 정보
       </StyledHeader>
@@ -151,7 +174,13 @@ const ClubInfoModal = ({ cid }) => {
         </Box>
         <Box sx={{ display: "flex" }}>
           <Label>최근 업데이트</Label>
-          <Input fullWidth value={clubInfo.update} />
+          <Input
+            fullWidth
+            InputProps={{
+              readOnly: true,
+            }}
+            value={clubInfo.update}
+          />
         </Box>
       </InfoWrap>
       <InfoWrap>
@@ -243,13 +272,26 @@ const ClubInfoModal = ({ cid }) => {
         </Title>
         <Box sx={{ display: "flex" }}>
           <Label>계정 ID</Label>
-          <Input fullWidth value={clubInfo.cid} />
+          <Input
+            fullWidth
+            InputProps={{
+              readOnly: true,
+            }}
+            value={clubInfo.cid}
+          />
         </Box>
         <Box sx={{ display: "flex" }}>
           <Label>계정 식별코드</Label>
-          <Input fullWidth value={clubInfo.cid} />
+          <Input
+            fullWidth
+            InputProps={{
+              readOnly: true,
+            }}
+            value={clubInfo.cid}
+          />
         </Box>
       </InfoWrap>
+      <SaveBtn variant="contained" ><SaveAsIcon ml="5px"/> 저장</SaveBtn>
     </StyledBox>
   );
 };
