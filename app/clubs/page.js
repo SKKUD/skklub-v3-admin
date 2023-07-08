@@ -22,7 +22,7 @@ const useCustomerIds = (customers) => {
   }, [customers]);
 };
 
-const Page = () => {
+export default function NoticesPage() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const customers = useCustomers(page, rowsPerPage);
@@ -71,6 +71,4 @@ const Page = () => {
       </Box>
     </>
   );
-};
-
-export default Page;
+}
