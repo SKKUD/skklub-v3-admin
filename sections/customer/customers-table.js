@@ -128,15 +128,6 @@ export const CustomersTable = (props) => {
           rowsPerPageOptions={[5, 10, 25]}
         />
       </Card>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        sx={{ overflow: "auto" }}
-      >
-        <ClubInfoModal cid={clubId} handleClose={handleClose} />
-      </Modal>
     </>
   );
 };
