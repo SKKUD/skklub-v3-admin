@@ -35,7 +35,7 @@ export const CustomersTable = (props) => {
   const selectedSome = selected.length > 0 && selected.length < items.length;
   const selectedAll = items.length > 0 && selected.length === items.length;
   const [open, setOpen] = React.useState(false);
-  const [clubId , setClubId] = React.useState('');
+  const [clubId, setClubId] = React.useState("");
   const handleOpen = (cid) => {
     setOpen(true);
     setClubId(cid);
@@ -133,9 +133,9 @@ export const CustomersTable = (props) => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{overflow: "auto",}}
+        sx={{ overflow: "auto" }}
       >
-        <ClubInfoModal cid={clubId} handleClose={handleClose}/>
+        <ClubInfoModal cid={clubId} handleClose={handleClose} />
       </Modal>
     </>
   );

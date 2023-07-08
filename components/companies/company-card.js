@@ -1,3 +1,5 @@
+"use client";
+
 import PropTypes from "prop-types";
 import ArrowDownOnSquareIcon from "@heroicons/react/24/solid/ArrowDownOnSquareIcon";
 import ClockIcon from "@heroicons/react/24/solid/ClockIcon";
@@ -7,10 +9,13 @@ import {
   Card,
   CardContent,
   Divider,
+  Modal,
   Stack,
   SvgIcon,
   Typography,
 } from "@mui/material";
+import { useState } from "react";
+import ClubInfoModal from "@/sections/customer/modal-clubinfo";
 
 export const CompanyCard = (props) => {
   const { club } = props;

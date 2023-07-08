@@ -13,9 +13,12 @@ import {
   SvgIcon,
   Typography,
   Unstable_Grid2 as Grid,
+  Modal,
 } from "@mui/material";
 import { CompanyCard } from "@/components/companies/company-card";
 import { CompaniesSearch } from "@/components/companies/companies-search";
+import { useState } from "react";
+import ClubInfoModal from "@/sections/customer/modal-clubinfo";
 
 const CLUBS = [
   {
@@ -181,6 +184,13 @@ const CLUBS = [
 ];
 
 export default function CompaniesPage() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleClose = () => setModalOpen(false);
+  const [clubId, setClubId] = useState("");
+  const handleOpen = (cid) => {
+    setModalOpen(true);
+    setClubId(cid);
+  };
   return (
     <>
       <Head>
@@ -215,7 +225,13 @@ export default function CompaniesPage() {
             <CompaniesSearch />
             <Grid container spacing={3}>
               {CLUBS.map((club) => (
-                <Grid xs={12} md={6} lg={4} key={club.id}>
+                <Grid
+                  xs={12}
+                  md={6}
+                  lg={4}
+                  key={club.id}
+                  onClick={() => handleOpen(club.id)}
+                >
                   <CompanyCard club={club} />
                 </Grid>
               ))}
@@ -230,6 +246,15 @@ export default function CompaniesPage() {
             </Box>
           </Stack>
         </Container>
+        <Modal
+          open={modalOpen}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{ overflow: "auto" }}
+        >
+          <ClubInfoModal cid={clubId} handleClose={handleClose} />
+        </Modal>
       </Box>
     </>
   );
