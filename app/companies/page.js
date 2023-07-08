@@ -13,68 +13,184 @@ import {
   SvgIcon,
   Typography,
   Unstable_Grid2 as Grid,
+  Modal,
 } from "@mui/material";
 import { CompanyCard } from "@/components/companies/company-card";
 import { CompaniesSearch } from "@/components/companies/companies-search";
+import { useState } from "react";
+import ClubInfoModal from "@/sections/customer/modal-clubinfo";
 
-const companies = [
+const CLUBS = [
   {
-    id: "2569ce0d517a7f06d3ea1f24",
-    createdAt: "27/03/2019",
-    description:
-      "Dropbox is a file hosting service that offers cloud storage, file synchronization, a personal cloud.",
-    logo: "/vercel.svg",
-    title: "Dropbox",
-    downloads: "594",
+    id: "5e887ac47eed253091be10cb",
+    cname: "라켓챌린지",
+    state: {
+      public: true,
+      revise: true,
+    },
+    authority: 3,
+    category1: "중앙동아리",
+    category2: "스포츠",
+    category3: "배드민턴",
+    campus: "명륜",
+    logo_path: "/vercel.svg",
+    president_name: "송호진",
+    president_contact: "010-3083-5418",
   },
   {
-    id: "ed2b900870ceba72d203ec15",
-    createdAt: "31/03/2019",
-    description:
-      "Medium is an online publishing platform developed by Evan Williams, and launched in August 2012.",
-    logo: "/vercel.svg",
-    title: "Medium Corporation",
-    downloads: "625",
+    id: "5e887b209c28ac3dd97f6db5",
+    cname: "라켓챌린지",
+    state: {
+      public: true,
+      revise: true,
+    },
+    authority: 3,
+    category1: "중앙동아리",
+    category2: "스포츠",
+    category3: "배드민턴",
+    campus: "명륜",
+    logo_path: "/vercel.svg",
+    president_name: "송호진",
+    president_contact: "010-3083-5418",
   },
   {
-    id: "a033e38768c82fca90df3db7",
-    createdAt: "03/04/2019",
-    description:
-      "Slack is a cloud-based set of team collaboration tools and services, founded by Stewart Butterfield.",
-    logo: "/vercel.svg",
-    title: "Slack",
-    downloads: "857",
+    id: "5e887b7602bdbc4dbb234b27",
+    cname: "라켓챌린지",
+    state: {
+      public: true,
+      revise: true,
+    },
+    authority: 3,
+    category1: "중앙동아리",
+    category2: "스포츠",
+    category3: "배드민턴",
+    campus: "명륜",
+    logo_path: "/vercel.svg",
+    president_name: "송호진",
+    president_contact: "010-3083-5418",
   },
   {
-    id: "1efecb2bf6a51def9869ab0f",
-    createdAt: "04/04/2019",
-    description:
-      "Lyft is an on-demand transportation company based in San Francisco, California.",
-    logo: "/vercel.svg",
-    title: "Lyft",
-    downloads: "406",
+    id: "5e86809283e28b96d2d38537",
+    cname: "라켓챌린지",
+    state: {
+      public: true,
+      revise: true,
+    },
+    authority: 3,
+    category1: "중앙동아리",
+    category2: "스포츠",
+    category3: "배드민턴",
+    campus: "명륜",
+    logo_path: "/vercel.svg",
+    president_name: "송호진",
+    president_contact: "010-3083-5418",
   },
   {
-    id: "1ed68149f65fbc6089b5fd07",
-    createdAt: "04/04/2019",
-    description:
-      "GitHub is a web-based hosting service for version control of code using Git.",
-    logo: "/vercel.svg",
-    title: "GitHub",
-    downloads: "835",
+    id: "5e86805e2bafd54f66cc95c3",
+    cname: "라켓챌린지",
+    state: {
+      public: true,
+      revise: true,
+    },
+    authority: 3,
+    category1: "중앙동아리",
+    category2: "스포츠",
+    category3: "배드민턴",
+    campus: "명륜",
+    logo_path: "/vercel.svg",
+    president_name: "송호진",
+    president_contact: "010-3083-5418",
   },
   {
-    id: "5dab321376eff6177407e887",
-    createdAt: "04/04/2019",
-    description:
-      "Squarespace provides software as a service for website building and hosting. Headquartered in NYC.",
-    logo: "/vercel.svg",
-    title: "Squarespace",
-    downloads: "835",
+    id: "5e887a1fbefd7938eea9c981",
+    cname: "라켓챌린지",
+    state: {
+      public: true,
+      revise: true,
+    },
+    authority: 3,
+    category1: "중앙동아리",
+    category2: "스포츠",
+    category3: "배드민턴",
+    campus: "명륜",
+    logo_path: "/vercel.svg",
+    president_name: "송호진",
+    president_contact: "010-3083-5418",
+  },
+  {
+    id: "5e887d0b3d090c1b8f162003",
+    cname: "라켓챌린지",
+    state: {
+      public: true,
+      revise: true,
+    },
+    authority: 3,
+    category1: "중앙동아리",
+    category2: "스포츠",
+    category3: "배드민턴",
+    campus: "명륜",
+    logo_path: "/vercel.svg",
+    president_name: "송호진",
+    president_contact: "010-3083-5418",
+  },
+  {
+    id: "5e88792be2d4cfb4bf0971d9",
+    cname: "라켓챌린지",
+    state: {
+      public: true,
+      revise: true,
+    },
+    authority: 3,
+    category1: "중앙동아리",
+    category2: "스포츠",
+    category3: "배드민턴",
+    campus: "명륜",
+    logo_path: "/vercel.svg",
+    president_name: "송호진",
+    president_contact: "010-3083-5418",
+  },
+  {
+    id: "5e8877da9a65442b11551975",
+    cname: "라켓챌린지",
+    state: {
+      public: true,
+      revise: true,
+    },
+    authority: 3,
+    category1: "중앙동아리",
+    category2: "스포츠",
+    category3: "배드민턴",
+    campus: "명륜",
+    logo_path: "/vercel.svg",
+    president_name: "송호진",
+    president_contact: "010-3083-5418",
+  },
+  {
+    id: "5e8680e60cba5019c5ca6fda",
+    cname: "라켓챌린지",
+    state: {
+      public: true,
+      revise: true,
+    },
+    authority: 3,
+    category1: "중앙동아리",
+    category2: "스포츠",
+    category3: "배드민턴",
+    campus: "명륜",
+    logo_path: "/vercel.svg",
+    president_name: "송호진",
+    president_contact: "010-3083-5418",
   },
 ];
 
 export default function CompaniesPage() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleClose = () => setModalOpen(false);
+  const [clubId, setClubId] = useState("");
+  const handleOpen = (cid) => {
+    setModalOpen(true);
+    setClubId(cid);
+  };
   return (
     <>
       <Head>
@@ -91,29 +207,7 @@ export default function CompaniesPage() {
           <Stack spacing={3}>
             <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant="h4">Companies</Typography>
-                <Stack alignItems="center" direction="row" spacing={1}>
-                  <Button
-                    color="inherit"
-                    startIcon={
-                      <SvgIcon fontSize="small">
-                        <ArrowUpOnSquareIcon />
-                      </SvgIcon>
-                    }
-                  >
-                    Import
-                  </Button>
-                  <Button
-                    color="inherit"
-                    startIcon={
-                      <SvgIcon fontSize="small">
-                        <ArrowDownOnSquareIcon />
-                      </SvgIcon>
-                    }
-                  >
-                    Export
-                  </Button>
-                </Stack>
+                <Typography variant="h4">동아리 관리</Typography>
               </Stack>
               <div>
                 <Button
@@ -130,9 +224,15 @@ export default function CompaniesPage() {
             </Stack>
             <CompaniesSearch />
             <Grid container spacing={3}>
-              {companies.map((company) => (
-                <Grid xs={12} md={6} lg={4} key={company.id}>
-                  <CompanyCard company={company} />
+              {CLUBS.map((club) => (
+                <Grid
+                  xs={12}
+                  md={6}
+                  lg={4}
+                  key={club.id}
+                  onClick={() => handleOpen(club.id)}
+                >
+                  <CompanyCard club={club} />
                 </Grid>
               ))}
             </Grid>
@@ -146,6 +246,12 @@ export default function CompaniesPage() {
             </Box>
           </Stack>
         </Container>
+
+        <ClubInfoModal
+          cid={clubId}
+          handleClose={handleClose}
+          modalOpen={modalOpen}
+        />
       </Box>
     </>
   );

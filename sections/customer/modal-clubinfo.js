@@ -15,8 +15,8 @@ import {
   Input,
 } from "@mui/material";
 import styled from "@emotion/styled";
-import CloseIcon from '@mui/icons-material/Close';
-import SaveAsIcon from '@mui/icons-material/SaveAs';
+import CloseIcon from "@mui/icons-material/Close";
+import SaveAsIcon from "@mui/icons-material/SaveAs";
 
 const StyledBox = styled(Box)({
   position: "absolute",
@@ -73,6 +73,7 @@ const InfoWrap = styled(Box)`
   background-color: #303030;
   position: relative;
 `;
+
 const Title = styled(Box)`
   color: #fff;
   background-color: #80a4ff;
@@ -96,11 +97,11 @@ const Label = styled(Box)`
 `;
 
 const SaveBtn = styled(Button)`
-    position: absolute;
-    bottom: 20px;
-    right: 60px;
-    margin-top: 30px;
-`
+  position: absolute;
+  bottom: 20px;
+  right: 60px;
+  margin-top: 30px;
+`;
 
 const clubInfo = {
   cid: 63,
@@ -132,167 +133,199 @@ const clubInfo = {
   update: "2023-06-12 18:43",
 };
 
-const ClubInfoModal = ({ cid, handleClose }) => {
+const ClubInfoModal = ({ cid, handleClose, modalOpen }) => {
   console.log(cid);
 
   return (
-    <StyledBox>
-      <CloseBtn onClick={handleClose}><CloseIcon/></CloseBtn>
-      <StyledHeader variant="h3">
-        <b>{clubInfo.cname}</b>의 상세 정보
-      </StyledHeader>
-      <Warn>정보 수정시, 하단의 저장 버튼을 눌러주세요.</Warn>
-      <InfoWrap>
-        <Title>
-          <Typography variant="h6" component="p" style={{ lineHeight: "36px" }}>
-            기본 정보
-          </Typography>
-        </Title>
-        <Box sx={{ display: "flex" }}>
-          <Label>동아리명</Label>
-          <Input fullWidth value={clubInfo.cname} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>대분류</Label>
-          <Input fullWidth value={clubInfo.category1} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>중분류</Label>
-          <Input fullWidth value={clubInfo.category2} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>소분류</Label>
-          <Input fullWidth value={clubInfo.category3} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>캠퍼스</Label>
-          <Input fullWidth value={clubInfo.campus} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>설립연도</Label>
-          <Input fullWidth value={clubInfo.estab_year} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>최근 업데이트</Label>
-          <Input
-            fullWidth
-            InputProps={{
-              readOnly: true,
-            }}
-            value={clubInfo.update}
-          />
-        </Box>
-      </InfoWrap>
-      <InfoWrap>
-        <Title>
-          <Typography variant="h6" component="p" style={{ lineHeight: "36px" }}>
-            모임 정보
-          </Typography>
-        </Title>
-        <Box sx={{ display: "flex" }}>
-          <Label>소개글</Label>
-          <Input fullWidth multiline value={clubInfo.intro_text} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>핵심 소개문구</Label>
-          <Input fullWidth value={clubInfo.intro_sentence} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>활동 내용</Label>
-          <Input fullWidth multiline value={clubInfo.activity_info} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>모임 시간</Label>
-          <Input fullWidth value={clubInfo.meeting_time} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>모임 장소</Label>
-          <Input fullWidth value={clubInfo.activity_location} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>활동 인원</Label>
-          <Input fullWidth value={clubInfo.activity_num} />
-        </Box>
-      </InfoWrap>
-      <InfoWrap>
-        <Title>
-          <Typography variant="h6" component="p" style={{ lineHeight: "36px" }}>
-            리쿠르팅 정보
-          </Typography>
-        </Title>
-        <Box sx={{ display: "flex" }}>
-          <Label>모집 시기</Label>
-          <Input fullWidth value={clubInfo.recruit_season} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>의무 활동 기간</Label>
-          <Input fullWidth value={clubInfo.activity_period} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>모집 방식</Label>
-          <Input fullWidth value={clubInfo.recruit_process} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>모집 인원</Label>
-          <Input fullWidth value={clubInfo.recruit_num} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>리쿠르팅 사이트</Label>
-          <Input fullWidth value={clubInfo.recruit_site} />
-        </Box>
-      </InfoWrap>
-      <InfoWrap>
-        <Title>
-          <Typography variant="h6" component="p" style={{ lineHeight: "36px" }}>
-            연락처/사이트
-          </Typography>
-        </Title>
-        <Box sx={{ display: "flex" }}>
-          <Label>대표자 이름</Label>
-          <Input fullWidth value={clubInfo.president_name} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>대표자 연락처</Label>
-          <Input fullWidth value={clubInfo.president_contact} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>웹페이지 1</Label>
-          <Input fullWidth value={clubInfo.website_link} />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>웹페이지 2</Label>
-          <Input fullWidth value={clubInfo.website_link2} />
-        </Box>
-      </InfoWrap>
-      <InfoWrap>
-        <Title>
-          <Typography variant="h6" component="p" style={{ lineHeight: "36px" }}>
-            계정 정보
-          </Typography>
-        </Title>
-        <Box sx={{ display: "flex" }}>
-          <Label>계정 ID</Label>
-          <Input
-            fullWidth
-            InputProps={{
-              readOnly: true,
-            }}
-            value={clubInfo.cid}
-          />
-        </Box>
-        <Box sx={{ display: "flex" }}>
-          <Label>계정 식별코드</Label>
-          <Input
-            fullWidth
-            InputProps={{
-              readOnly: true,
-            }}
-            value={clubInfo.cid}
-          />
-        </Box>
-      </InfoWrap>
-      <SaveBtn variant="contained" ><SaveAsIcon ml="5px"/> 저장</SaveBtn>
-    </StyledBox>
+    <Modal
+      open={modalOpen}
+      onClose={handleClose}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      sx={{ overflow: "auto" }}
+    >
+      <StyledBox>
+        <CloseBtn onClick={handleClose}>
+          <CloseIcon />
+        </CloseBtn>
+        <StyledHeader variant="h3">
+          <b>{clubInfo.cname}</b>의 상세 정보
+        </StyledHeader>
+        <Warn>정보 수정시, 하단의 저장 버튼을 눌러주세요.</Warn>
+        <InfoWrap>
+          <Title>
+            <Typography
+              variant="h6"
+              component="p"
+              style={{ lineHeight: "36px" }}
+            >
+              기본 정보
+            </Typography>
+          </Title>
+          <Box sx={{ display: "flex" }}>
+            <Label>동아리명</Label>
+            <Input fullWidth value={clubInfo.cname} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>대분류</Label>
+            <Input fullWidth value={clubInfo.category1} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>중분류</Label>
+            <Input fullWidth value={clubInfo.category2} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>소분류</Label>
+            <Input fullWidth value={clubInfo.category3} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>캠퍼스</Label>
+            <Input fullWidth value={clubInfo.campus} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>설립연도</Label>
+            <Input fullWidth value={clubInfo.estab_year} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>최근 업데이트</Label>
+            <Input
+              fullWidth
+              inputProps={{
+                readOnly: true,
+              }}
+              value={clubInfo.update}
+            />
+          </Box>
+        </InfoWrap>
+        <InfoWrap>
+          <Title>
+            <Typography
+              variant="h6"
+              component="p"
+              style={{ lineHeight: "36px" }}
+            >
+              모임 정보
+            </Typography>
+          </Title>
+          <Box sx={{ display: "flex" }}>
+            <Label>소개글</Label>
+            <Input fullWidth multiline value={clubInfo.intro_text} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>핵심 소개문구</Label>
+            <Input fullWidth value={clubInfo.intro_sentence} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>활동 내용</Label>
+            <Input fullWidth multiline value={clubInfo.activity_info} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>모임 시간</Label>
+            <Input fullWidth value={clubInfo.meeting_time} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>모임 장소</Label>
+            <Input fullWidth value={clubInfo.activity_location} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>활동 인원</Label>
+            <Input fullWidth value={clubInfo.activity_num} />
+          </Box>
+        </InfoWrap>
+        <InfoWrap>
+          <Title>
+            <Typography
+              variant="h6"
+              component="p"
+              style={{ lineHeight: "36px" }}
+            >
+              리쿠르팅 정보
+            </Typography>
+          </Title>
+          <Box sx={{ display: "flex" }}>
+            <Label>모집 시기</Label>
+            <Input fullWidth value={clubInfo.recruit_season} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>의무 활동 기간</Label>
+            <Input fullWidth value={clubInfo.activity_period} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>모집 방식</Label>
+            <Input fullWidth value={clubInfo.recruit_process} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>모집 인원</Label>
+            <Input fullWidth value={clubInfo.recruit_num} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>리쿠르팅 사이트</Label>
+            <Input fullWidth value={clubInfo.recruit_site} />
+          </Box>
+        </InfoWrap>
+        <InfoWrap>
+          <Title>
+            <Typography
+              variant="h6"
+              component="p"
+              style={{ lineHeight: "36px" }}
+            >
+              연락처/사이트
+            </Typography>
+          </Title>
+          <Box sx={{ display: "flex" }}>
+            <Label>대표자 이름</Label>
+            <Input fullWidth value={clubInfo.president_name} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>대표자 연락처</Label>
+            <Input fullWidth value={clubInfo.president_contact} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>웹페이지 1</Label>
+            <Input fullWidth value={clubInfo.website_link} />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>웹페이지 2</Label>
+            <Input fullWidth value={clubInfo.website_link2} />
+          </Box>
+        </InfoWrap>
+        <InfoWrap>
+          <Title>
+            <Typography
+              variant="h6"
+              component="p"
+              style={{ lineHeight: "36px" }}
+            >
+              계정 정보
+            </Typography>
+          </Title>
+          <Box sx={{ display: "flex" }}>
+            <Label>계정 ID</Label>
+            <Input
+              fullWidth
+              inputProps={{
+                readOnly: true,
+              }}
+              value={clubInfo.cid}
+            />
+          </Box>
+          <Box sx={{ display: "flex" }}>
+            <Label>계정 식별코드</Label>
+            <Input
+              fullWidth
+              inputProps={{
+                readOnly: true,
+              }}
+              value={clubInfo.cid}
+            />
+          </Box>
+        </InfoWrap>
+        <SaveBtn variant="contained">
+          <SaveAsIcon ml="5px" /> 저장
+        </SaveBtn>
+      </StyledBox>
+    </Modal>
   );
 };
 
