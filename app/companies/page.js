@@ -246,15 +246,12 @@ export default function CompaniesPage() {
             </Box>
           </Stack>
         </Container>
-        <Modal
-          open={modalOpen}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          sx={{ overflow: "auto" }}
-        >
-          <ClubInfoModal cid={clubId} handleClose={handleClose} />
-        </Modal>
+
+        <ClubInfoModal
+          cid={clubId}
+          handleClose={handleClose}
+          modalOpen={modalOpen}
+        />
       </Box>
     </>
   );
