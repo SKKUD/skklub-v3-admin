@@ -16,6 +16,7 @@ import { useSelection } from "@/hooks/use-selection";
 import { CustomersTable } from "@/sections/customer/customers-table";
 import { CustomersSearch } from "@/sections/customer/customers-search";
 import { applyPagination } from "@/utils/apply-pagination";
+import MiniHeader from "@/components/common/mini-header";
 
 const now = new Date();
 
@@ -223,23 +224,7 @@ const Page = () => {
       >
         <Container maxWidth="xl">
           <Stack spacing={3}>
-            <Stack direction="row" justifyContent="space-between" spacing={4}>
-              <Stack spacing={1}>
-                <Typography variant="h4">동아리 관리</Typography>
-              </Stack>
-              <div>
-                <Button
-                  startIcon={
-                    <SvgIcon fontSize="small">
-                      <PlusIcon />
-                    </SvgIcon>
-                  }
-                  variant="contained"
-                >
-                  Add
-                </Button>
-              </div>
-            </Stack>
+            <MiniHeader label={"동아리 관리"} />
             <CustomersSearch />
             <CustomersTable
               count={data.length}
