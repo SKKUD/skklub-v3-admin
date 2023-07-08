@@ -2,190 +2,17 @@
 
 import { useCallback, useMemo, useState } from "react";
 import Head from "next/head";
-import { subDays, subHours } from "date-fns";
-import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
-import {
-  Box,
-  Button,
-  Container,
-  Stack,
-  SvgIcon,
-  Typography,
-} from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import { useSelection } from "@/hooks/use-selection";
 import { CustomersTable } from "@/sections/customer/customers-table";
 import { CustomersSearch } from "@/sections/customer/customers-search";
 import { applyPagination } from "@/utils/apply-pagination";
 import MiniHeader from "@/components/common/mini-header";
-
-const now = new Date();
-
-const data = [
-  {
-    id: "5e887ac47eed253091be10cb",
-    cname: "라켓챌린지",
-    state: {
-      public: true,
-      revise: true,
-    },
-    authority: 3,
-    category1: "중앙동아리",
-    category2: "스포츠",
-    category3: "배드민턴",
-    campus: "명륜",
-    logo_path: "/vercel.svg",
-    president_name: "송호진",
-    president_contact: "010-3083-5418",
-  },
-  {
-    id: "5e887b209c28ac3dd97f6db5",
-    cname: "라켓챌린지",
-    state: {
-      public: true,
-      revise: true,
-    },
-    authority: 3,
-    category1: "중앙동아리",
-    category2: "스포츠",
-    category3: "배드민턴",
-    campus: "명륜",
-    logo_path: "/vercel.svg",
-    president_name: "송호진",
-    president_contact: "010-3083-5418",
-  },
-  {
-    id: "5e887b7602bdbc4dbb234b27",
-    cname: "라켓챌린지",
-    state: {
-      public: true,
-      revise: true,
-    },
-    authority: 3,
-    category1: "중앙동아리",
-    category2: "스포츠",
-    category3: "배드민턴",
-    campus: "명륜",
-    logo_path: "/vercel.svg",
-    president_name: "송호진",
-    president_contact: "010-3083-5418",
-  },
-  {
-    id: "5e86809283e28b96d2d38537",
-    cname: "라켓챌린지",
-    state: {
-      public: true,
-      revise: true,
-    },
-    authority: 3,
-    category1: "중앙동아리",
-    category2: "스포츠",
-    category3: "배드민턴",
-    campus: "명륜",
-    logo_path: "/vercel.svg",
-    president_name: "송호진",
-    president_contact: "010-3083-5418",
-  },
-  {
-    id: "5e86805e2bafd54f66cc95c3",
-    cname: "라켓챌린지",
-    state: {
-      public: true,
-      revise: true,
-    },
-    authority: 3,
-    category1: "중앙동아리",
-    category2: "스포츠",
-    category3: "배드민턴",
-    campus: "명륜",
-    logo_path: "/vercel.svg",
-    president_name: "송호진",
-    president_contact: "010-3083-5418",
-  },
-  {
-    id: "5e887a1fbefd7938eea9c981",
-    cname: "라켓챌린지",
-    state: {
-      public: true,
-      revise: true,
-    },
-    authority: 3,
-    category1: "중앙동아리",
-    category2: "스포츠",
-    category3: "배드민턴",
-    campus: "명륜",
-    logo_path: "/vercel.svg",
-    president_name: "송호진",
-    president_contact: "010-3083-5418",
-  },
-  {
-    id: "5e887d0b3d090c1b8f162003",
-    cname: "라켓챌린지",
-    state: {
-      public: true,
-      revise: true,
-    },
-    authority: 3,
-    category1: "중앙동아리",
-    category2: "스포츠",
-    category3: "배드민턴",
-    campus: "명륜",
-    logo_path: "/vercel.svg",
-    president_name: "송호진",
-    president_contact: "010-3083-5418",
-  },
-  {
-    id: "5e88792be2d4cfb4bf0971d9",
-    cname: "라켓챌린지",
-    state: {
-      public: true,
-      revise: true,
-    },
-    authority: 3,
-    category1: "중앙동아리",
-    category2: "스포츠",
-    category3: "배드민턴",
-    campus: "명륜",
-    logo_path: "/vercel.svg",
-    president_name: "송호진",
-    president_contact: "010-3083-5418",
-  },
-  {
-    id: "5e8877da9a65442b11551975",
-    cname: "라켓챌린지",
-    state: {
-      public: true,
-      revise: true,
-    },
-    authority: 3,
-    category1: "중앙동아리",
-    category2: "스포츠",
-    category3: "배드민턴",
-    campus: "명륜",
-    logo_path: "/vercel.svg",
-    president_name: "송호진",
-    president_contact: "010-3083-5418",
-  },
-  {
-    id: "5e8680e60cba5019c5ca6fda",
-    cname: "라켓챌린지",
-    state: {
-      public: true,
-      revise: true,
-    },
-    authority: 3,
-    category1: "중앙동아리",
-    category2: "스포츠",
-    category3: "배드민턴",
-    campus: "명륜",
-    logo_path: "/vercel.svg",
-    president_name: "송호진",
-    president_contact: "010-3083-5418",
-  },
-];
+import { CLUBS_DATA } from "@/constants/constants";
 
 const useCustomers = (page, rowsPerPage) => {
   return useMemo(() => {
-    return applyPagination(data, page, rowsPerPage);
+    return applyPagination(CLUBS_DATA, page, rowsPerPage);
   }, [page, rowsPerPage]);
 };
 
@@ -227,7 +54,7 @@ const Page = () => {
             <MiniHeader label={"동아리 관리"} />
             <CustomersSearch />
             <CustomersTable
-              count={data.length}
+              count={CLUBS_DATA.length}
               items={customers}
               onDeselectAll={customersSelection.handleDeselectAll}
               onDeselectOne={customersSelection.handleDeselectOne}
