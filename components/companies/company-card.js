@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import ClubInfoModal from "@/sections/customer/modal-clubinfo";
+import ClubInfoModal from "@/sections/clubs/modal-clubinfo";
 
 export const CompanyCard = (props) => {
   const { club } = props;

@@ -11,11 +11,11 @@ import {
 import { CompanyCard } from "@/components/companies/company-card";
 import { CompaniesSearch } from "@/components/companies/companies-search";
 import { useState } from "react";
-import ClubInfoModal from "@/sections/customer/modal-clubinfo";
+import ClubInfoModal from "@/sections/clubs/modal-clubinfo";
 import { CLUBS_DATA } from "@/constants/constants";
 import MiniHeader from "@/components/common/mini-header";
 
-export default function CompaniesPage() {
+export default function ClubsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const handleClose = () => setModalOpen(false);
   const [clubId, setClubId] = useState("");

@@ -1,4 +1,4 @@
-import { Box, Typography, Button, Input } from "@mui/material";
+import { Box, Typography, Input } from "@mui/material";
 import styled from "@emotion/styled";
 import CustomModal from "@/components/common/customModal";
 
@@ -51,13 +51,6 @@ const Label = styled(Box)`
   border-radius: 10px;
 `;
 
-const SaveBtn = styled(Button)`
-  position: absolute;
-  bottom: 20px;
-  right: 60px;
-  margin-top: 30px;
-`;
-
 const clubInfo = {
   cid: 63,
   cname: "라켓챌린지",
@@ -88,14 +81,14 @@ const clubInfo = {
   update: "2023-06-12 18:43",
 };
 
-const ClubInfoModal = ({ cid, handleClose, modalOpen }) => {
+const NoticeInfoModal = ({ cid, handleClose, modalOpen }) => {
   return (
     <CustomModal handleClose={handleClose} modalOpen={modalOpen}>
       <StyledHeader variant="h3">
-        <b>{clubInfo.cname}</b>의 상세 정보
+        <b>공지</b>의 상세 정보
       </StyledHeader>
       <Warn>정보 수정시, 하단의 저장 버튼을 눌러주세요.</Warn>
-      <Warn>정보 수정시, 하단의 저장 버튼을 눌러주세요.</Warn>
+
       <InfoWrap>
         <Title>
           <Typography variant="h6" component="p" style={{ lineHeight: "36px" }}>
@@ -249,4 +242,4 @@ const ClubInfoModal = ({ cid, handleClose, modalOpen }) => {
   );
 };
 
-export default ClubInfoModal;
+export default NoticeInfoModal;

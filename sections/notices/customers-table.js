@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+
 import {
   Box,
   Card,
@@ -12,10 +12,10 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  Modal,
 } from "@mui/material";
-import styled from "@emotion/styled";
-import ClubInfoModal from "./modal-clubinfo";
+import ClubInfoModal from "../clubs/modal-clubinfo";
+import { useState } from "react";
+import NoticeInfoModal from "./NoticeInfoModal";
 
 export const CustomersTable = (props) => {
   const {
@@ -34,13 +34,13 @@ export const CustomersTable = (props) => {
 
   const selectedSome = selected.length > 0 && selected.length < items.length;
   const selectedAll = items.length > 0 && selected.length === items.length;
-  const [open, setOpen] = React.useState(false);
-  const [clubId, setClubId] = React.useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [clubId, setClubId] = useState("");
   const handleOpen = (cid) => {
-    setOpen(true);
+    setModalOpen(true);
     setClubId(cid);
   };
-  const handleClose = () => setOpen(false);
+  const handleClose = () => setModalOpen(false);
 
   return (
     <>
@@ -117,6 +117,11 @@ export const CustomersTable = (props) => {
           rowsPerPageOptions={[5, 10, 25]}
         />
       </Card>
+      <NoticeInfoModal
+        cid={clubId}
+        handleClose={handleClose}
+        modalOpen={modalOpen}
+      />
     </>
   );
 };
