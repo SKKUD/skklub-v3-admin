@@ -62,56 +62,45 @@ export const CustomersTable = (props) => {
                     }}
                   />
                 </TableCell>
-                <TableCell>상태</TableCell>
-                <TableCell>캠퍼스</TableCell>
-                <TableCell>모임명</TableCell>
-                <TableCell>대분류</TableCell>
-                <TableCell>중분류</TableCell>
-                <TableCell>소분류</TableCell>
-                <TableCell>대표자</TableCell>
-                <TableCell>연락처</TableCell>
+                <TableCell>NO</TableCell>
+                <TableCell>제목</TableCell>
+                <TableCell>글쓴이</TableCell>
+                <TableCell>작성일지</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {items.map((customer) => {
-                const isSelected = selected.includes(customer.id);
+                const isSelected = selected.includes(customer.no);
 
                 return (
                   <TableRow
                     hover
-                    key={customer.id}
+                    key={customer.no}
                     selected={isSelected}
-                    onClick={() => handleOpen(customer.id)}
+                    onClick={() => handleOpen(customer.no)}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
-                            onSelectOne?.(customer.id);
+                            onSelectOne?.(customer.no);
                           } else {
-                            onDeselectOne?.(customer.id);
+                            onDeselectOne?.(customer.no);
                           }
                         }}
                       />
                     </TableCell>
-                    <TableCell>
-                      {customer.state.public ? "공개" : "비공개"}/
-                      {customer.state.revise ? "수정가능" : "수정불가능"}
-                    </TableCell>
-                    <TableCell>{customer.campus}</TableCell>
+                    <TableCell>{customer.no}</TableCell>
+                    <TableCell>{customer.title}</TableCell>
                     <TableCell>
                       <Stack alignItems="center" direction="row" spacing={2}>
                         <Typography variant="subtitle2">
-                          {customer.cname}
+                          {customer.writer}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>{customer.category1}</TableCell>
-                    <TableCell>{customer.category2}</TableCell>
-                    <TableCell>{customer.category3}</TableCell>
-                    <TableCell>{customer.president_name}</TableCell>
-                    <TableCell>{customer.president_contact}</TableCell>
+                    <TableCell>{customer.date}</TableCell>
                   </TableRow>
                 );
               })}

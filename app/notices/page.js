@@ -8,11 +8,11 @@ import { CustomersTable } from "@/sections/customer/customers-table";
 import { CustomersSearch } from "@/sections/customer/customers-search";
 import { applyPagination } from "@/utils/apply-pagination";
 import MiniHeader from "@/components/common/mini-header";
-import { CLUBS_DATA } from "@/constants/constants";
+import { NOTICE_DATA } from "@/constants/constants";
 
 const useCustomers = (page, rowsPerPage) => {
   return useMemo(() => {
-    return applyPagination(CLUBS_DATA, page, rowsPerPage);
+    return applyPagination(NOTICE_DATA, page, rowsPerPage);
   }, [page, rowsPerPage]);
 };
 
@@ -54,7 +54,7 @@ export default function NoticesPage() {
             <MiniHeader label={"공지 관리"} />
             <CustomersSearch />
             <CustomersTable
-              count={CLUBS_DATA.length}
+              count={NOTICE_DATA.length}
               items={customers}
               onDeselectAll={customersSelection.handleDeselectAll}
               onDeselectOne={customersSelection.handleDeselectOne}
