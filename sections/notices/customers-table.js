@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+
 import {
   Box,
   Card,
@@ -12,10 +12,10 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  Modal,
 } from "@mui/material";
-import styled from "@emotion/styled";
-import ClubInfoModal from "./modal-clubinfo";
+import ClubInfoModal from "../clubs/modal-clubinfo";
+import { useState } from "react";
+import NoticeInfoModal from "./NoticeInfoModal";
 
 export const CustomersTable = (props) => {
   const {
@@ -34,13 +34,13 @@ export const CustomersTable = (props) => {
 
   const selectedSome = selected.length > 0 && selected.length < items.length;
   const selectedAll = items.length > 0 && selected.length === items.length;
-  const [open, setOpen] = React.useState(false);
-  const [clubId, setClubId] = React.useState("");
+  const [modalOpen, setModalOpen] = useState(false);
+  const [clubId, setClubId] = useState("");
   const handleOpen = (cid) => {
-    setOpen(true);
+    setModalOpen(true);
     setClubId(cid);
   };
-  const handleClose = () => setOpen(false);
+  const handleClose = () => setModalOpen(false);
 
   return (
     <>
@@ -62,56 +62,45 @@ export const CustomersTable = (props) => {
                     }}
                   />
                 </TableCell>
-                <TableCell>상태</TableCell>
-                <TableCell>캠퍼스</TableCell>
-                <TableCell>모임명</TableCell>
-                <TableCell>대분류</TableCell>
-                <TableCell>중분류</TableCell>
-                <TableCell>소분류</TableCell>
-                <TableCell>대표자</TableCell>
-                <TableCell>연락처</TableCell>
+                <TableCell>NO</TableCell>
+                <TableCell>제목</TableCell>
+                <TableCell>글쓴이</TableCell>
+                <TableCell>작성일지</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((customer) => {
-                const isSelected = selected.includes(customer.id);
+              {items.map((notice) => {
+                const isSelected = selected.includes(notice.no);
 
                 return (
                   <TableRow
                     hover
-                    key={customer.id}
+                    key={notice.no}
                     selected={isSelected}
-                    onClick={() => handleOpen(customer.id)}
+                    onClick={() => handleOpen(notice.no)}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
-                            onSelectOne?.(customer.id);
+                            onSelectOne?.(notice.no);
                           } else {
-                            onDeselectOne?.(customer.id);
+                            onDeselectOne?.(notice.no);
                           }
                         }}
                       />
                     </TableCell>
-                    <TableCell>
-                      {customer.state.public ? "공개" : "비공개"}/
-                      {customer.state.revise ? "수정가능" : "수정불가능"}
-                    </TableCell>
-                    <TableCell>{customer.campus}</TableCell>
+                    <TableCell>{notice.no}</TableCell>
+                    <TableCell>{notice.title}</TableCell>
                     <TableCell>
                       <Stack alignItems="center" direction="row" spacing={2}>
                         <Typography variant="subtitle2">
-                          {customer.cname}
+                          {notice.writer}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>{customer.category1}</TableCell>
-                    <TableCell>{customer.category2}</TableCell>
-                    <TableCell>{customer.category3}</TableCell>
-                    <TableCell>{customer.president_name}</TableCell>
-                    <TableCell>{customer.president_contact}</TableCell>
+                    <TableCell>{notice.date}</TableCell>
                   </TableRow>
                 );
               })}
@@ -128,6 +117,11 @@ export const CustomersTable = (props) => {
           rowsPerPageOptions={[5, 10, 25]}
         />
       </Card>
+      <NoticeInfoModal
+        cid={clubId}
+        handleClose={handleClose}
+        modalOpen={modalOpen}
+      />
     </>
   );
 };

@@ -160,3 +160,42 @@ export const CLUBS_DATA = [
     president_contact: "010-3083-5418",
   },
 ];
+
+export const NOTICE_DATA = [
+  {
+    no: 1,
+    title: "qwer",
+    writer: "me",
+    date: "2023-06-29",
+  },
+  {
+    no: 2,
+    title: "qwer",
+    writer: "me",
+    date: "2023-06-29",
+  },
+  {
+    no: 3,
+    title: "qwer",
+    writer: "me",
+    date: "2023-06-29",
+  },
+  {
+    no: 4,
+    title: "qwer",
+    writer: "me",
+    date: "2023-06-29",
+  },
+  {
+    no: 5,
+    title: "qwer",
+    writer: "me",
+    date: "2023-06-29",
+  },
+  {
+    no: 6,
+    title: "qwer",
+    writer: "me",
+    date: "2023-06-29",
+  },
+];
