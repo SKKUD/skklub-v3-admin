@@ -1,46 +1,32 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
 import Head from "next/head";
-import { Box, Container, Stack } from "@mui/material";
-import { useSelection } from "@/hooks/use-selection";
-import { CustomersTable } from "@/sections/customer/customers-table";
-import { CustomersSearch } from "@/sections/customer/customers-search";
-import { applyPagination } from "@/utils/apply-pagination";
-import MiniHeader from "@/components/common/mini-header";
+import {
+  Box,
+  Container,
+  Pagination,
+  Stack,
+  Unstable_Grid2 as Grid,
+} from "@mui/material";
+import { CompanyCard } from "@/components/companies/company-card";
+import { CompaniesSearch } from "@/components/companies/companies-search";
+import { useState } from "react";
+import ClubInfoModal from "@/sections/customer/modal-clubinfo";
 import { CLUBS_DATA } from "@/constants/constants";
+import MiniHeader from "@/components/common/mini-header";
 
-const useCustomers = (page, rowsPerPage) => {
-  return useMemo(() => {
-    return applyPagination(CLUBS_DATA, page, rowsPerPage);
-  }, [page, rowsPerPage]);
-};
-
-const useCustomerIds = (customers) => {
-  return useMemo(() => {
-    return customers.map((customer) => customer.id);
-  }, [customers]);
-};
-
-export default function NoticesPage() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const customers = useCustomers(page, rowsPerPage);
-  const customersIds = useCustomerIds(customers);
-  const customersSelection = useSelection(customersIds);
-
-  const handlePageChange = useCallback((event, value) => {
-    setPage(value);
-  }, []);
-
-  const handleRowsPerPageChange = useCallback((event) => {
-    setRowsPerPage(event.target.value);
-  }, []);
-
+export default function CompaniesPage() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleClose = () => setModalOpen(false);
+  const [clubId, setClubId] = useState("");
+  const handleOpen = (cid) => {
+    setModalOpen(true);
+    setClubId(cid);
+  };
   return (
     <>
       <Head>
-        <title>Customers | Devias Kit</title>
+        <title>Companies | Devias Kit</title>
       </Head>
       <Box
         component="main"
@@ -51,23 +37,37 @@ export default function NoticesPage() {
       >
         <Container maxWidth="xl">
           <Stack spacing={3}>
-            <MiniHeader label={"동아리 관리"} />
-            <CustomersSearch />
-            <CustomersTable
-              count={CLUBS_DATA.length}
-              items={customers}
-              onDeselectAll={customersSelection.handleDeselectAll}
-              onDeselectOne={customersSelection.handleDeselectOne}
-              onPageChange={handlePageChange}
-              onRowsPerPageChange={handleRowsPerPageChange}
-              onSelectAll={customersSelection.handleSelectAll}
-              onSelectOne={customersSelection.handleSelectOne}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              selected={customersSelection.selected}
-            />
+            <MiniHeader label="동아리 관리" />
+            <CompaniesSearch />
+            <Grid container spacing={3}>
+              {CLUBS_DATA.map((club) => (
+                <Grid
+                  xs={12}
+                  md={6}
+                  lg={4}
+                  key={club.id}
+                  onClick={() => handleOpen(club.id)}
+                >
+                  <CompanyCard club={club} />
+                </Grid>
+              ))}
+            </Grid>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Pagination count={3} size="small" />
+            </Box>
           </Stack>
         </Container>
+
+        <ClubInfoModal
+          cid={clubId}
+          handleClose={handleClose}
+          modalOpen={modalOpen}
+        />
       </Box>
     </>
   );
