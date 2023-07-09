@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { styled } from "@mui/material/styles";
-import { SideNav } from "./side-nav";
-import { TopNav } from "./top-nav";
+import { SideNav } from "./dashboard/side-nav";
+import { TopNav } from "./dashboard/top-nav";
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -22,7 +22,7 @@ const LayoutContainer = styled("div")({
   width: "100%",
 });
 
-export const Layout = (props) => {
+export const MainLayout = (props) => {
   const { children } = props;
   const pathname = usePathname();
   const [openNav, setOpenNav] = useState(false);
