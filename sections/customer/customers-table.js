@@ -69,38 +69,38 @@ export const CustomersTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((customer) => {
-                const isSelected = selected.includes(customer.no);
+              {items.map((notice) => {
+                const isSelected = selected.includes(notice.no);
 
                 return (
                   <TableRow
                     hover
-                    key={customer.no}
+                    key={notice.no}
                     selected={isSelected}
-                    onClick={() => handleOpen(customer.no)}
+                    onClick={() => handleOpen(notice.no)}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
                         checked={isSelected}
                         onChange={(event) => {
                           if (event.target.checked) {
-                            onSelectOne?.(customer.no);
+                            onSelectOne?.(notice.no);
                           } else {
-                            onDeselectOne?.(customer.no);
+                            onDeselectOne?.(notice.no);
                           }
                         }}
                       />
                     </TableCell>
-                    <TableCell>{customer.no}</TableCell>
-                    <TableCell>{customer.title}</TableCell>
+                    <TableCell>{notice.no}</TableCell>
+                    <TableCell>{notice.title}</TableCell>
                     <TableCell>
                       <Stack alignItems="center" direction="row" spacing={2}>
                         <Typography variant="subtitle2">
-                          {customer.writer}
+                          {notice.writer}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>{customer.date}</TableCell>
+                    <TableCell>{notice.date}</TableCell>
                   </TableRow>
                 );
               })}

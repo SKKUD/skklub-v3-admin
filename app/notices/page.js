@@ -10,24 +10,24 @@ import { applyPagination } from "@/utils/apply-pagination";
 import MiniHeader from "@/components/common/mini-header";
 import { NOTICE_DATA } from "@/constants/constants";
 
-const useCustomers = (page, rowsPerPage) => {
+const useNotices = (page, rowsPerPage) => {
   return useMemo(() => {
     return applyPagination(NOTICE_DATA, page, rowsPerPage);
   }, [page, rowsPerPage]);
 };
 
-const useCustomerIds = (customers) => {
+const useNoticeIds = (notices) => {
   return useMemo(() => {
-    return customers.map((customer) => customer.id);
-  }, [customers]);
+    return notices.map((notice) => notice.no);
+  }, [notices]);
 };
 
 export default function NoticesPage() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const customers = useCustomers(page, rowsPerPage);
-  const customersIds = useCustomerIds(customers);
-  const customersSelection = useSelection(customersIds);
+  const notices = useNotices(page, rowsPerPage);
+  const noticesIds = useNoticeIds(notices);
+  const noticesSelection = useSelection(noticesIds);
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -55,16 +55,16 @@ export default function NoticesPage() {
             <CustomersSearch />
             <CustomersTable
               count={NOTICE_DATA.length}
-              items={customers}
-              onDeselectAll={customersSelection.handleDeselectAll}
-              onDeselectOne={customersSelection.handleDeselectOne}
+              items={notices}
+              onDeselectAll={noticesSelection.handleDeselectAll}
+              onDeselectOne={noticesSelection.handleDeselectOne}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
-              onSelectAll={customersSelection.handleSelectAll}
-              onSelectOne={customersSelection.handleSelectOne}
+              onSelectAll={noticesSelection.handleSelectAll}
+              onSelectOne={noticesSelection.handleSelectOne}
               page={page}
               rowsPerPage={rowsPerPage}
-              selected={customersSelection.selected}
+              selected={noticesSelection.selected}
             />
           </Stack>
         </Container>
