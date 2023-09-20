@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import Providers from "@/utils/theme/providers";
 import "@/app/globals.css";
+import RecoilRootProvider from "@/utils/recoil/RecoilRootProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -12,7 +13,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning={true}>
-        <Providers>{children}</Providers>
+        <RecoilRootProvider>
+          <Providers>{children}</Providers>
+        </RecoilRootProvider>
       </body>
     </html>
   );

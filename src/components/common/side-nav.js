@@ -77,10 +77,14 @@ const SideNav = (props) => {
           <ProfileContainer>
             <div>
               <Typography color="inherit" variant="subtitle1">
-                유저 이름
+                {localStorage.getItem("username")
+                  ? localStorage.getItem("username")
+                  : "알수없음"}
               </Typography>
               <Typography color="neutral.400" variant="body2">
-                계정 분류
+                {localStorage.getItem("role")
+                  ? localStorage.getItem("role").split("_")[1]
+                  : "알수없음"}
               </Typography>
             </div>
             <SvgIcon fontSize="small" sx={{ color: "netral.500" }}>

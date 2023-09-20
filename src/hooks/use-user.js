@@ -1,16 +1,25 @@
 const BASE_URL = process.env.NEXT_PUBLIC_DEV_URI;
 import axios from "axios";
+import { useState } from "react";
 
 export const useUserLoginApi = () => {
-  const login = (id, pw) => {
+  const [accessToken, setAccess] = useState("");
+  const login = async (id, pw) => {
     axios
       .post(BASE_URL + `/user/login?username=${id}&password=${pw}`)
       .then((response) => {
-        console.log(response);
+        localStorage.setItem("refresh", response.headers["refresh-token"]);
+        localStorage.setItem("userid", response.data.id);
+        localStorage.setItem("username", response.data.username);
+        localStorage.setItem("role", response.data.role);
+        setAccess(response.headers["authorization"]);
       })
       .catch((error) => {
         console.log(error);
+        alert("아이디나 비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
       });
+
+    return accessToken;
   };
 
   return [login];
