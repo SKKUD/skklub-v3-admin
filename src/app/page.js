@@ -16,19 +16,23 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useAuth } from "@/hooks/use-auth";
 import { LoginLayout } from "@/layouts/loginLayout";
 import { useUserLoginApi } from "@/hooks/use-user";
+import { useSetRecoilState } from "recoil";
+import { accessToken } from "@/utils/recoil/atoms";
 
 const Home = () => {
   const router = useRouter();
   const [id, setID] = useState("");
   const [pw, setPW] = useState("");
   const [login] = useUserLoginApi();
+  const setAccessToken = useSetRecoilState(accessToken);
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(id, pw);
-    router.push("/account")
+    login(id, pw).then((token) => {
+      setAccessToken(token);
+      router.push("/account");
+    });
   };
 
   return (
