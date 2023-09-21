@@ -16,6 +16,7 @@ import Image from "next/image";
 import { items } from "@/utils/sidebar-items";
 import { SideNavItem } from "./side-nav-item";
 import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
 
 const Container = styled(Box)`
   display: flex;
@@ -60,6 +61,13 @@ const SideNav = (props) => {
   const { open, onClose } = props;
   const pathname = usePathname();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
+  const [username, setUsername] = useState("");
+  const [role, setRole] = useState("");
+
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+    setRole(localStorage.getItem("role").split("_")[1]);
+  }, []);
 
   return (
     <Drawer
@@ -77,14 +85,10 @@ const SideNav = (props) => {
           <ProfileContainer>
             <div>
               <Typography color="inherit" variant="subtitle1">
-                {localStorage.getItem("username")
-                  ? localStorage.getItem("username")
-                  : "알수없음"}
+                {username ? username : "알수없음"}
               </Typography>
               <Typography color="neutral.400" variant="body2">
-                {localStorage.getItem("role")
-                  ? localStorage.getItem("role").split("_")[1]
-                  : "알수없음"}
+                {role ? role : "알수없음"}
               </Typography>
             </div>
             <SvgIcon fontSize="small" sx={{ color: "netral.500" }}>

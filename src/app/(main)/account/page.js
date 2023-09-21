@@ -10,8 +10,14 @@ import {
 } from "@mui/material";
 import { AccountProfile } from "@/components/account/account-profile";
 import { AccountProfileDetails } from "@/components/account/account-profile-details";
+import { useEffect, useState } from "react";
 
 const Account = () => {
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+  }, []);
   return (
     <>
       <Head>
@@ -30,9 +36,7 @@ const Account = () => {
               <Typography variant="h4">
                 <b style={{ color: "#80A4FF" }}>
                   {"[ "}
-                  {localStorage.getItem("username")
-                    ? localStorage.getItem("username")
-                    : "동아리"}
+                  {username ? username : "동아리"}
                   {" ]  "}
                 </b>
                 정보 수정
