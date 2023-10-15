@@ -13,6 +13,8 @@ import {
   Tab,
   Unstable_Grid2 as Grid,
 } from "@mui/material";
+import ClubInfoForm from "./clubinfo-form";
+import RecruitInfoForm from "./recruitinfo-form";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -68,15 +70,15 @@ export const AccountProfileDetails = () => {
               </Tabs>
             </Box>
             <CustomTabPanel value={tabvalue} index={0}>
-              Item One
+              <ClubInfoForm />
             </CustomTabPanel>
             <CustomTabPanel value={tabvalue} index={1}>
-              Item Two
+              <RecruitInfoForm />
             </CustomTabPanel>
           </Box>
         </CardContent>
         <Divider />
-        <CardActions sx={{ justifyContent: "flex-end" }}>
+        <CardActions sx={{ justifyContent: "flex-end", padding: "15px" }}>
           <Button variant="contained">Save details</Button>
         </CardActions>
       </Card>
