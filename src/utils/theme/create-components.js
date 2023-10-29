@@ -230,7 +230,7 @@ export function createComponents(config) {
     MuiFormLabel: {
       styleOverrides: {
         root: {
-          fontSize: 14,
+          fontSize: 16,
           fontWeight: 500,
           [`&.${inputLabelClasses.filled}`]: {
             transform: "translate(12px, 18px) scale(1)",
