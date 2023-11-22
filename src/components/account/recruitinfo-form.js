@@ -20,20 +20,16 @@ const states = [
   },
 ];
 
-const RecruitInfoForm = () => {
-  const [values, setValues] = useState({
-    recruitStartAt: "yyyy-MM-ddTHH:mm(T는 날짜랑 시간 구분용 문자)",
-    recruitEndAt: "2012-06-02T14:04(상시모집은 시작일 종료일 null or No Field)",
-    recruitQuota: "00명 || 최대한 많이 뽑을 예정", //필수
-    recruitProcessDescription: "1. 어쩌구 2. 어쩌구 AnyString", //필수
-    recruitContact: "010 - 1234 - 1234 || 인스타 아이디",
-    recruitWebLink: "www.xxx.com || or any String",
-  });
-
+const RecruitInfoForm = ({ values, setValues }) => {
   const handleChange = useCallback((event) => {
+    const { name, value } = event.target;
+
     setValues((prevState) => ({
       ...prevState,
-      [event.target.name]: event.target.value,
+      recruit: {
+        ...prevState.recruit,
+        [name]: value,
+      },
     }));
   }, []);
 
@@ -46,7 +42,7 @@ const RecruitInfoForm = () => {
             label="모집 시작일"
             name="recruitStartAt"
             onChange={handleChange}
-            value={values.recruitStartAt}
+            value={values?.recruit.recruitStartAt || ""}
           />
         </Grid>
         <Grid xs={12} md={6}>
@@ -55,7 +51,7 @@ const RecruitInfoForm = () => {
             label="모집 종료일"
             name="recruitEndAt"
             onChange={handleChange}
-            value={values.recruitEndAt}
+            value={values?.recruit.recruitEndAt || ""}
           />
         </Grid>
 
@@ -65,7 +61,7 @@ const RecruitInfoForm = () => {
             label="모집 문의처"
             name="recruitContact"
             onChange={handleChange}
-            value={values.recruitContact}
+            value={values?.recruit.recruitContact || ""}
           />
         </Grid>
         <Grid xs={12} md={6}>
@@ -74,7 +70,7 @@ const RecruitInfoForm = () => {
             label="모집 링크"
             name="recruitWebLink"
             onChange={handleChange}
-            value={values.recruitWebLink}
+            value={values?.recruit.recruitWebLink || ""}
           />
         </Grid>
         <Grid xs={12} md={6}>
@@ -85,7 +81,7 @@ const RecruitInfoForm = () => {
             onChange={handleChange}
             required
             maxRows={6}
-            value={values.recruitQuota}
+            value={values?.recruit.recruitQuota || ""}
           />
         </Grid>
         <Grid xs={12} md={6}>
@@ -98,27 +94,9 @@ const RecruitInfoForm = () => {
             required
             multiline
             maxRows={6}
-            value={values.recruitProcessDescription}
+            value={values?.recruit.recruitProcessDescription || ""}
           />
         </Grid>
-
-        {/* <Grid xs={12} md={6}>
-          <TextField
-            fullWidth
-            label="Select State"
-            name="state"
-            onChange={handleChange}
-            select
-            SelectProps={{ native: true }}
-            value={values.state}
-          >
-            {states.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </TextField>
-        </Grid> */}
       </Grid>
     </>
   );
