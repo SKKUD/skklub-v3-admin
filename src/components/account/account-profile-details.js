@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import ClubInfoForm from "./clubinfo-form";
 import RecruitInfoForm from "./recruitinfo-form";
+import { useClubInfoApi, useEditClubInfoApi } from "@/hooks/use-user";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -39,9 +40,23 @@ export const AccountProfileDetails = () => {
     setTabValue(newValue);
   };
 
-  const handleSubmit = useCallback((event) => {
+  // 동아리 정보, 모집 정보 state
+  const [clubInfo] = useClubInfoApi();
+  const [infoValues, setInfoValues] = useState({});
+  useEffect(() => {
+    setInfoValues(clubInfo);
+  }, [clubInfo]);
+
+  // 수정 submit
+  const [editClubInfo, editRecruitInfo] = useEditClubInfoApi();
+  const handleSubmit = (event) => {
     event.preventDefault();
-  }, []);
+    if (tabvalue === 0) {
+      editClubInfo(infoValues);
+    } else if (tabvalue === 1) {
+      editRecruitInfo(infoValues);
+    }
+  };
 
   return (
     <form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -66,16 +81,18 @@ export const AccountProfileDetails = () => {
               </Tabs>
             </Box>
             <CustomTabPanel value={tabvalue} index={0}>
-              <ClubInfoForm />
+              <ClubInfoForm values={infoValues} setValues={setInfoValues} />
             </CustomTabPanel>
             <CustomTabPanel value={tabvalue} index={1}>
-              <RecruitInfoForm />
+              <RecruitInfoForm values={infoValues} setValues={setInfoValues} />
             </CustomTabPanel>
           </Box>
         </CardContent>
         <Divider />
         <CardActions sx={{ justifyContent: "flex-end", padding: "15px" }}>
-          <Button variant="contained">Save details</Button>
+          <Button variant="contained" onClick={handleSubmit}>
+            수정사항 저장
+          </Button>
         </CardActions>
       </Card>
     </form>
