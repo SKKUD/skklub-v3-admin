@@ -1,17 +1,22 @@
 import axios from "axios";
-import { useState } from "react";
 const JWT_EXPIRY_TIME = (1 / 2) * 3600 * 1000;
 
 export const useUserLoginApi = () => {
   const refresh = async () => {
     let token = "";
     const refreshToken = localStorage.getItem("refresh").split(" ")[1];
-    console.log(axios.defaults);
-    axios.get(`/refresh?${refreshToken}`).then((response) => {
-      token = response.headers["authorization"];
-    });
-    axios.defaults.withCredentials = true;
-    axios.defaults.headers.common["Authorization"] = token;
+    if (axios.defaults.headers.common["Authorization"]) {
+      console.log(axios.defaults.headers.common["Authorization"]);
+      await axios
+        .get(`/refresh?${refreshToken}`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          token = response.headers["authorization"].split(" ")[1];
+        });
+      axios.defaults.withCredentials = true;
+      axios.defaults.headers.common["Authorization"] = token;
+    }
   };
 
   const login = async (id, pw) => {
@@ -23,7 +28,7 @@ export const useUserLoginApi = () => {
         localStorage.setItem("userid", response.data.id);
         localStorage.setItem("username", response.data.username);
         localStorage.setItem("role", response.data.role);
-        token = response.headers["authorization"];
+        token = response.headers["authorization"].split(" ")[1];
 
         setTimeout(refresh, JWT_EXPIRY_TIME - 60000);
       })
