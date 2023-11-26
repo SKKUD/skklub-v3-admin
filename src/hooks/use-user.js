@@ -1,18 +1,33 @@
 import axios from "axios";
+import { setCookie, getCookie } from "./use-cookie";
 const JWT_EXPIRY_TIME = (1 / 2) * 3600 * 1000;
 
 export const useUserLoginApi = () => {
   const refresh = async () => {
-    let token = "";
-    const refreshToken = localStorage.getItem("refresh").split(" ")[1];
-    if (axios.defaults.headers.common["Authorization"]) {
-      console.log(axios.defaults.headers.common["Authorization"]);
+    let token = getCookie("access");
+    const refreshToken = localStorage.getItem("refresh");
+    const expires = new Date();
+    expires.setMinutes(expires.getMinutes() + 30);
+    if (token) {
+      console.log("refresh");
       await axios
-        .get(`/refresh?${refreshToken}`, {
+        .get(`/refresh`, {
           withCredentials: true,
+          headers: {
+            Authorization: token,
+            "Refresh-Token": refreshToken,
+          },
         })
         .then((response) => {
-          token = response.headers["authorization"].split(" ")[1];
+          token = response.headers["authorization"];
+          setCookie("access", token, {
+            path: "/",
+            expires,
+            secure: true,
+            httpOnly: true,
+          });
+
+          setTimeout(refresh, JWT_EXPIRY_TIME - 60000);
         });
       axios.defaults.withCredentials = true;
       axios.defaults.headers.common["Authorization"] = token;
@@ -24,11 +39,19 @@ export const useUserLoginApi = () => {
     await axios
       .post(`/user/login?username=${id}&password=${pw}`)
       .then((response) => {
+        const expires = new Date();
+        expires.setMinutes(expires.getMinutes() + 30);
         localStorage.setItem("refresh", response.headers["refresh-token"]);
         localStorage.setItem("userid", response.data.id);
         localStorage.setItem("username", response.data.username);
         localStorage.setItem("role", response.data.role);
-        token = response.headers["authorization"].split(" ")[1];
+        token = response.headers["authorization"];
+        setCookie("access", token, {
+          path: "/",
+          expires,
+          secure: true,
+          httpOnly: true,
+        });
 
         setTimeout(refresh, JWT_EXPIRY_TIME - 60000);
       })

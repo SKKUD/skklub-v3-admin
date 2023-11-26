@@ -1,12 +1,11 @@
 "use client";
 import { MainLayout } from "@/layouts/mainLayout";
-import { useEffect } from "react";
-import { useUserLoginApi } from "@/hooks/use-user";
+import { CookiesProvider } from "react-cookie";
 
 export default function Layout({ children }) {
-  const { refresh } = useUserLoginApi();
-  useEffect(() => {
-    refresh();
-  }, []);
-  return <MainLayout children={children} />;
+  return (
+    <CookiesProvider>
+      <MainLayout children={children} />
+    </CookiesProvider>
+  );
 }
