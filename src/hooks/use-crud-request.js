@@ -21,8 +21,15 @@ const useCrudRequest = (baseUrl) => {
 	const read = async (query) => {
 		try {
 			setLoading(true);
-			const response = await axios.get(baseUrl, { params: query });
-			setData(response.data);
+			await axios.get(baseUrl, { params: query }).then(
+				(response) => {
+					console.log(response);
+					setData(response.data);
+				},
+				(error) => {
+					console.log(error);
+				}
+			);
 			setLoading(false);
 		} catch (error) {
 			setError(error);
