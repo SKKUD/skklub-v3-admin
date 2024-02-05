@@ -1,4 +1,3 @@
-const BASE_URL = process.env.NEXT_PUBLIC_DEV_URI;
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -6,7 +5,7 @@ export const useUserLoginApi = () => {
   const [accessToken, setAccess] = useState("");
   const login = async (id, pw) => {
     axios
-      .post(BASE_URL + `/user/login?username=${id}&password=${pw}`)
+      .post(`/user/login?username=${id}&password=${pw}`)
       .then((response) => {
         localStorage.setItem("refresh", response.headers["refresh-token"]);
         localStorage.setItem("userid", response.data.id);
@@ -28,7 +27,7 @@ export const useUserLoginApi = () => {
 export const useUserLogoutApi = () => {
   const logout = () => {
     axios
-      .get(BASE_URL + `/oauth2/kakao/logout`, {
+      .get(`/oauth2/kakao/logout`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -46,7 +45,7 @@ export const useUserLogoutApi = () => {
 export const useUserEditApi = () => {
   const editUser = ({ name, pw, contact }) => {
     axios
-      .post(BASE_URL + `/user/0?password=${pw}&name=${name}&contact=${contact}`)
+      .post(`/user/0?password=${pw}&name=${name}&contact=${contact}`)
       .then((response) => {
         console.log(response);
       })
