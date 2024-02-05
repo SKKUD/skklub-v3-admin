@@ -66,7 +66,7 @@ const SideNav = (props) => {
 
   useEffect(() => {
     setUsername(localStorage.getItem("username"));
-    setRole(localStorage.getItem("role").split("_")[1]);
+    setRole(localStorage.getItem("role")?.split("_")[1]);
   }, []);
 
   return (
