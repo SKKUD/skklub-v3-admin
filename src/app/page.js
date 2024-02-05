@@ -5,41 +5,30 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import {
-	Alert,
-	Box,
-	Button,
-	FormHelperText,
-	Link as MUILink,
-	Stack,
-	Tab,
-	Tabs,
-	TextField,
-	Typography,
-} from '@mui/material';
-import { LoginLayout } from '@/layouts/loginLayout';
-import { useUserLoginApi } from '@/hooks/use-user';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { LoginState } from '@/utils/recoil/atoms';
+  Alert,
+  Box,
+  Button,
+  FormHelperText,
+  Link as MUILink,
+  Stack,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { LoginLayout } from "@/layouts/loginLayout";
+import { useUserLoginApi } from "@/hooks/use-user";
 
 const Home = () => {
-	const router = useRouter();
-	const [id, setID] = useState('');
-	const [pw, setPW] = useState('');
-	const [login] = useUserLoginApi();
-	const [isLoggedIn, setIsLoggedIn] = useRecoilState(LoginState);
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		login(id, pw).then((res) => {
-			if (res === true) {
-				setIsLoggedIn(true);
-				router.push('/account');
-			} else {
-				alert(`아이디 또는 비밀번호가 틀렸습니다. 다시 시도해주세요.
-        에러 메시지: ${res}
-        `);
-			}
-		});
-	};
+  const router = useRouter();
+  const [id, setID] = useState("");
+  const [pw, setPW] = useState("");
+  const [login] = useUserLoginApi();
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login(id, pw);
+  };
 
 	return (
 		<LoginLayout>

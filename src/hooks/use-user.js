@@ -1,45 +1,68 @@
 const BASE_URL = process.env.NEXT_PUBLIC_DEV_URI;
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export const useUserLoginApi = () => {
-	const [res, setRes] = useState(null);
-	const login = async (id, pw) => {
-		axios
-			.post(`/user/login?username=${id}&password=${pw}`)
-			.then((response) => {
-				localStorage.setItem(
-					'token',
-					response.headers.authorization.split(' ')[1]
-				);
-				localStorage.setItem('username', response.data.username);
-				localStorage.setItem('role', response.data.role);
-				setRes(true);
-			})
-			.catch((error) => {
-				console.log(error);
-				setRes(error);
-			});
-		return res;
-	};
+  const login = async (id, pw) => {
+    axios
+      .post(`/user/login?username=${id}&password=${pw}`)
+      .then((response) => {
+        console.log(response.data);
+        localStorage.setItem("key", response.headers["authorization"]);
+        localStorage.setItem("refresh", response.headers["refresh-token"]);
+        localStorage.setItem("userid", response.data.id);
+        localStorage.setItem("username", response.data.username);
+        localStorage.setItem("role", response.data.role);
+      }).then(()=>{
+        router.push("/account");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("아이디나 비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
+      });
+  };
 
-	return [login];
+  return [login];
 };
 
+export const useUserRefreshApi = () => {
+  const router = useRouter();
+  const auth = localStorage.getItem("key");
+  const refreshToken = localStorage.getItem("refresh");
+  const refresh = async () => {
+    axios
+      .get(`/refresh`, { Authorization: auth, "Refresh-Token": refreshToken })
+      .then((response) => {
+        localStorage.setItem("key", response.headers["authorization"]);
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+        router.push("/");
+      });
+  };
+
+  return [refresh];
+};
+
+
+
 export const useUserLogoutApi = () => {
-	const logout = () => {
-		axios
-			.get(`/oauth2/kakao/logout`, {
-				withCredentials: true,
-			})
-			.then((response) => {
-				console.log(response);
-				// window.location.reload();
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	};
+  const name = localStorage.getItem("username")
+  const logout = () => {
+    axios
+      .get(`/user/logout?username=${name}&password=${pw}`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response);
+        // window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
 	return [logout];
 };

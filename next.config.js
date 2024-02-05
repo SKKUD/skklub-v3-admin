@@ -4,11 +4,11 @@ const nextConfig = {
 	generateEtags: false,
 	async rewrites() {
 		return [
-			{
-				source: '/:path*',
-				destination: `${process.env.NEXT_PUBLIC_API}/:path*`,
-			},
-		];
+      {
+        source: "/:path*",
+        destination: `${process.env.NEXT_PUBLIC_API}/:path*`,
+      },
+    ];
 	},
 	images: {
 		domains: ['s3.ap-northeast-2.amazonaws.com'],

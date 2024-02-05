@@ -64,10 +64,10 @@ const SideNav = (props) => {
 	const [username, setUsername] = useState('');
 	const [role, setRole] = useState('');
 
-	useEffect(() => {
-		setUsername(localStorage.getItem('username'));
-		setRole(localStorage.getItem('role').split('_')[1]);
-	}, []);
+  useEffect(() => {
+    setUsername(localStorage.getItem("username"));
+    setRole(localStorage.getItem("role")?.split("_")[1]);
+  }, []);
 
 	return (
 		<Drawer
