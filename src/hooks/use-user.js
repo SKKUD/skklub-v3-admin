@@ -1,9 +1,10 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export const useUserLoginApi = () => {
-  const login = async (id, pw) => {
+  const router = useRouter();
+  const login = (id, pw) => {
     axios
       .post(`/user/login?username=${id}&password=${pw}`)
       .then((response) => {
@@ -13,7 +14,10 @@ export const useUserLoginApi = () => {
         localStorage.setItem("userid", response.data.id);
         localStorage.setItem("username", response.data.username);
         localStorage.setItem("role", response.data.role);
-      }).then(()=>{
+        axios.defaults.headers.common["Authorization"] =
+          response.headers["authorization"];
+      })
+      .then(() => {
         router.push("/account");
       })
       .catch((error) => {
@@ -29,7 +33,7 @@ export const useUserRefreshApi = () => {
   const router = useRouter();
   const auth = localStorage.getItem("key");
   const refreshToken = localStorage.getItem("refresh");
-  const refresh = async () => {
+  const refresh = () => {
     axios
       .get(`/refresh`, { Authorization: auth, "Refresh-Token": refreshToken })
       .then((response) => {
@@ -45,10 +49,8 @@ export const useUserRefreshApi = () => {
   return [refresh];
 };
 
-
-
 export const useUserLogoutApi = () => {
-  const name = localStorage.getItem("username")
+  const name = localStorage.getItem("username");
   const logout = () => {
     axios
       .get(`/user/logout?username=${name}&password=${pw}`, {
@@ -84,10 +86,12 @@ export const useUserEditApi = () => {
 export const useClubInfoApi = () => {
   const [clubInfo, setClubInfo] = useState(null);
   useEffect(() => {
-    if (localStorage.getItem("userid")) {
+    const userid = localStorage.getItem("userid");
+    const auth = localStorage.getItem("key");
+    if (userid) {
       const getClubInfo = async () => {
         await axios
-          .get(BASE_URL + `/club/103`)
+          .get(`/club/my`, { withCredentials: true })
           .then((response) => {
             // console.log(response.data);
             setClubInfo(response.data);
@@ -104,8 +108,8 @@ export const useClubInfoApi = () => {
 };
 
 export const useEditClubInfoApi = () => {
+  const userid = localStorage.getItem("userid");
   const editClubInfo = (values) => {
-    console.log(values.name);
     if (values.name === "") {
       alert("동아리 이름을 입력해주세요.");
     } else if (values.briefActivityDescription === "") {
@@ -115,11 +119,10 @@ export const useEditClubInfoApi = () => {
     } else if (values.clubDescription === "") {
       alert("동아리 설명을 입력해주세요.");
     } else {
-      if (localStorage.getItem("userid")) {
-        const id = localStorage.getItem("userid");
+      if (userid) {
         axios
           .patch(
-            BASE_URL + `/club/103`,
+            `/club/${userid}`,
             {
               clubName: values.name,
               briefActivityDescription: values.briefActivityDescription,
@@ -145,6 +148,7 @@ export const useEditClubInfoApi = () => {
   };
 
   const editRecruitInfo = (values) => {
+    const userid = localStorage.getItem("userid");
     const recruit = values.recruit;
     console.log(recruit);
     if (recruit.recruitQuota === "") {
@@ -152,10 +156,9 @@ export const useEditClubInfoApi = () => {
     } else if (recruit.recruitProcessDescription === "") {
       alert("모집 방식을 입력해주세요.");
     } else {
-      if (localStorage.getItem("userid")) {
-        const id = localStorage.getItem("userid");
+      if (userid) {
         axios
-          .patch(BASE_URL + `/users/${id}`, {
+          .patch(`/users/${userid}`, {
             recruitStartAt: recruit.recruitStartAt,
             recruitEndAt: recruit.recruitEndAt,
             recruitQuota: recruit.recruitQuota,
