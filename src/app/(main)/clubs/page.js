@@ -1,8 +1,6 @@
 'use client';
 
-import CommonTable from '@/components/common/common-table';
 import { useEffect, useState, useMemo } from 'react';
-import useCrudRequest from '@/hooks/use-crud-request';
 import axios from 'axios';
 import styled from '@emotion/styled';
 import {
@@ -19,19 +17,81 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditModal from '@/components/clubManagement/edit-modal';
 import { Edit } from '@mui/icons-material';
 
+import {
+	MaterialReactTable,
+	useMaterialReactTable,
+} from 'material-react-table';
+
 const Clubs = () => {
-	// Read request to /club/prev
-	const crud = useCrudRequest('/club/prev');
-	const [tableData, setTableData] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [rowData, setRowData] = useState(null);
+	const [data, setData] = useState([]);
+	const [isError, setIsError] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [isRefetching, setIsRefetching] = useState(false);
+
+	const [rowCount, setRowCount] = useState(0);
 	const [open, setOpen] = useState(false);
+	const [pagination, setPagination] = useState({
+		pageIndex: 0,
+		pageSize: 20,
+	});
+
+	const [globalFilter, setGlobalFilter] = useState('');
 
 	useEffect(() => {
-		crud.read({
-			campus: '명륜',
-		});
-	}, []);
+		const fetchData = async () => {
+			if (!data.length) {
+				setIsLoading(true);
+			} else {
+				setIsRefetching(true);
+			}
+
+			if (globalFilter) {
+				try {
+					axios
+						.get('/club/search/prevs', {
+							params: {
+								keyword: globalFilter,
+							},
+						})
+						.then((response) => {
+							setData(response.data.content);
+							setRowCount(response.data.totalElements);
+						});
+				} catch (error) {
+					setIsError(true);
+					console.error(error);
+					return;
+				}
+				setIsError(false);
+				setIsLoading(false);
+				setIsRefetching(false);
+			} else {
+				try {
+					axios
+						.get('/club/prev', {
+							params: {
+								campus: '명륜',
+								page: pagination.pageIndex,
+								size: pagination.pageSize,
+							},
+						})
+						.then((response) => {
+							setData(response.data.content);
+							setRowCount(response.data.totalElements);
+						});
+				} catch (error) {
+					setIsError(true);
+					console.error(error);
+					return;
+				}
+				setIsError(false);
+				setIsLoading(false);
+				setIsRefetching(false);
+			}
+		};
+
+		fetchData();
+	}, [pagination.pageIndex, globalFilter, pagination.pageSize]);
 
 	const columns = useMemo(
 		() => [
@@ -60,7 +120,27 @@ const Clubs = () => {
 		setOpen(true);
 	};
 
-	const tableOptions = {
+	const table = useMaterialReactTable({
+		columns,
+		data,
+		manualFiltering: true,
+		manualPagination: true,
+		muiToolbarAlertBannerProps: isError
+			? {
+					color: 'error',
+					children: 'Error loading data',
+			  }
+			: undefined,
+		onGlobalFilterChange: setGlobalFilter,
+		onPaginationChange: setPagination,
+		rowCount,
+		state: {
+			globalFilter,
+			isLoading,
+			pagination,
+			showAlertBanner: isError,
+			showProgressBars: isRefetching,
+		},
 		enableRowActions: true,
 		renderRowActions: ({ row, table }) => (
 			<>
@@ -81,7 +161,7 @@ const Clubs = () => {
 				</Box>
 			</>
 		),
-	};
+	});
 
 	const TableContainer = styled.div`
 		width: 100%;
@@ -90,28 +170,14 @@ const Clubs = () => {
 		position: relative;
 	`;
 
-	if (crud.loading) {
-		return <div>로딩중</div>;
-	}
-
-	if (crud.error) {
-		return <div>에러</div>;
-	}
-
-	if (crud.data) {
-		return (
-			<TableContainer>
-				<div>
-					<CommonTable
-						data={crud.data.content}
-						columns={columns}
-						options={tableOptions}
-					/>
-					<EditModal data={rowData} open={open} setOpen={setOpen} />
-				</div>
-			</TableContainer>
-		);
-	}
+	return (
+		<TableContainer>
+			<div>
+				<MaterialReactTable table={table} />
+				{/* <EditModal data={rowData} open={open} setOpen={setOpen} /> */}
+			</div>
+		</TableContainer>
+	);
 };
 
 export default Clubs;
