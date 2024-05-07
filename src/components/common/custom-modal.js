@@ -47,7 +47,7 @@ const SaveBtn = styled(Button)`
 
 export default function CustomModal({
 	children,
-	handleClose,
+	setModalOpen,
 	modalOpen,
 	buttonTitle,
 	handleClick,
@@ -55,14 +55,16 @@ export default function CustomModal({
 	setFiles,
 }) {
 	const handleCloseClick = () => {
-		handleClose();
-		setFiles([]);
+		setModalOpen(false);
+		if (files) {
+			setFiles([]);
+		}
 	};
 
 	return (
 		<Modal
 			open={modalOpen}
-			onClose={handleClose}
+			onClose={handleCloseClick}
 			aria-labelledby="modal-modal-title"
 			aria-describedby="modal-modal-description"
 			sx={{ overflow: 'auto' }}
@@ -73,7 +75,7 @@ export default function CustomModal({
 				</CloseBtn>
 
 				{children}
-				<SaveBtn variant="contained">
+				<SaveBtn variant="contained" onClick={handleClick}>
 					<SaveAsIcon ml="5px" /> &nbsp; {buttonTitle}
 				</SaveBtn>
 			</StyledBox>

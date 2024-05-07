@@ -2,7 +2,9 @@ import { Box, Typography, TextField, CardContent, Button } from '@mui/material';
 import styled from '@emotion/styled';
 import CustomModal from '../common/custom-modal';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+
+import axiosInterceptorInstance from '../../../axios/axiosInterceptorInstance';
+
 import Image from 'next/image';
 
 const StyledHeader = styled(Typography)({
@@ -36,6 +38,9 @@ const ThumbnailWrap = styled(Box)`
 	justify-content: center;
 	align-items: center;
 	margin-bottom: 20px;
+	> img {
+		border-radius: 25%;
+	}
 `;
 
 const ThumbailImage = styled(Image)`
@@ -43,32 +48,50 @@ const ThumbailImage = styled(Image)`
 	margin-bottom: 10px;
 `;
 
-const NoticeInfoModal = ({ noticeId, handleClose, modalOpen }) => {
+const NoticeInfoModal = ({ data, setOpenEdit, openEdit }) => {
 	const [noticeData, setNoticeData] = useState({});
-	const [thumbnail, setThumbnail] = useState(null);
+	const [thumbnail, setThumbnail] = useState('/assets/profile.jpeg');
+	const [files, setFiles] = useState(null);
 
 	useEffect(() => {
-		axios.get(`/notice/prev/${noticeId}`).then((response) => {
-			setNoticeData(response.data);
-			if (response.data.thumbnail) {
-				setThumbnail(response.data.thumbnail.url);
-			} else {
-				// default image
-				setThumbnail('/assets/profile.jpeg');
-			}
-		});
-	}, [noticeId]);
+		if (openEdit) {
+			axiosInterceptorInstance
+				.get(`/notice/prev/${data.noticeId}`)
+				.then((response) => {
+					setNoticeData(response.data);
+					if (response.data.thumbnail) {
+						setThumbnail(response.data.thumbnail.url);
+					}
+
+					if (response.data.files) {
+						setFiles(response.data.files);
+					}
+				});
+		}
+	}, [data]);
 
 	const handleClick = () => {
-		axios.post(`/notice/${noticeId}`, noticeData).then((response) => {
-			handleClose();
-		});
+		axiosInterceptorInstance
+			.post(`/notice/${noticeId}`, noticeData)
+			.then((response) => {
+				console.log(response);
+				setOpenEdit(false);
+			});
+	};
+
+	const handleInputChange = (event) => {
+		const { name, value } = event.target;
+		setNoticeData((prevState) => ({
+			...prevState,
+			[name]: value,
+		}));
 	};
 
 	return (
 		<CustomModal
-			handleClose={handleClose}
-			modalOpen={modalOpen}
+			setModalOpen={setOpenEdit}
+			handleClick={handleClick}
+			modalOpen={openEdit}
 			buttonTitle={'저장하기'}
 		>
 			<StyledHeader variant="h3">공지 내용</StyledHeader>
@@ -81,11 +104,13 @@ const NoticeInfoModal = ({ noticeId, handleClose, modalOpen }) => {
 
 			<InfoWrap>
 				<ThumbnailWrap>
-					<ThumbailImage
+					<Image
 						src={thumbnail}
 						alt="club image"
 						width={200}
 						height={200}
+						placeholder="blur"
+						blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
 					/>
 					{/* change image button */}
 					<Button variant="contained" component="label">
@@ -95,7 +120,8 @@ const NoticeInfoModal = ({ noticeId, handleClose, modalOpen }) => {
 				</ThumbnailWrap>
 
 				<TextField
-					value={noticeData.title}
+					value={noticeData?.title || ''}
+					onChange={handleInputChange}
 					fullWidth
 					label="제목"
 					name="제목"
@@ -108,7 +134,8 @@ const NoticeInfoModal = ({ noticeId, handleClose, modalOpen }) => {
 				<TextField
 					label="내용"
 					name="내용"
-					value={noticeData.content}
+					value={noticeData?.content || ''}
+					onChange={handleInputChange}
 					fullWidth
 					multiline
 					minRows={5}
@@ -118,19 +145,29 @@ const NoticeInfoModal = ({ noticeId, handleClose, modalOpen }) => {
 					}}
 				/>
 
-				<TextField
-					label="첨부파일"
-					name="첨부파일"
-					value={noticeData.uploadedFile}
-					fullWidth
-					multiline
-					minRows={5}
-					maxRows={5}
-					sx={{
-						marginBottom: '20px',
-					}}
-				/>
-				
+				<div>
+					<div>
+						{files?.map((file) => (
+							<div key={file.name}>
+								<Button
+									onClick={() => {
+										setFiles((prevFiles) =>
+											prevFiles.filter(
+												(prevFile) => prevFile.name !== file.name
+											)
+										);
+									}}
+								>
+									{file.name}
+								</Button>
+							</div>
+						))}
+					</div>
+					<Button variant="contained" component="label">
+						파일 추가
+						<input type="file" hidden />
+					</Button>
+				</div>
 			</InfoWrap>
 		</CustomModal>
 	);

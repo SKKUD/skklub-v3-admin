@@ -15,6 +15,7 @@ import {
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditModal from '@/components/clubManagement/edit-modal';
+import DeleteModal from '@/components/clubManagement/delete-modal';
 import { Edit } from '@mui/icons-material';
 
 import {
@@ -29,13 +30,18 @@ const Clubs = () => {
 	const [isRefetching, setIsRefetching] = useState(false);
 
 	const [rowCount, setRowCount] = useState(0);
-	const [open, setOpen] = useState(false);
 	const [pagination, setPagination] = useState({
 		pageIndex: 0,
 		pageSize: 20,
 	});
 
+	const [openEdit, setOpenEdit] = useState(false);
+	const [openDelete, setOpenDelete] = useState(false);
+
 	const [globalFilter, setGlobalFilter] = useState('');
+	const [rowData, setRowData] = useState(null);
+
+	const [campus, setCampus] = useState('');
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -67,10 +73,29 @@ const Clubs = () => {
 				setIsRefetching(false);
 			} else {
 				try {
+					switch (localStorage.getItem('role')) {
+						case 'ROLE_MASTER':
+							setCampus('명륜');
+							break;
+						case 'ROLE_ADMIN_SUWON_CENTRAL':
+							setCampus('율전');
+							break;
+						case 'ROLE_ADMIN_SEOUL_SOUTH':
+							setCampus('명륜');
+							break;
+						default:
+							setCampus('명륜');
+							break;
+					}
+
+					if (campus === '') {
+						return;
+					}
+
 					axios
 						.get('/club/prev', {
 							params: {
-								campus: '명륜',
+								campus: campus,
 								page: pagination.pageIndex,
 								size: pagination.pageSize,
 							},
@@ -91,7 +116,13 @@ const Clubs = () => {
 		};
 
 		fetchData();
-	}, [pagination.pageIndex, globalFilter, pagination.pageSize]);
+	}, [
+		pagination.pageIndex,
+		globalFilter,
+		pagination.pageSize,
+		campus,
+		isRefetching,
+	]);
 
 	const columns = useMemo(
 		() => [
@@ -115,15 +146,30 @@ const Clubs = () => {
 		[]
 	);
 
-	const openModal = (row) => {
+	const openModalEdit = (row) => {
 		setRowData(row.original);
-		setOpen(true);
+		setOpenEdit(true);
+	};
+
+	const openDeleteConfirmModal = (row) => {
+		setRowData(row.original);
+		setOpenDelete(true);
 	};
 
 	const table = useMaterialReactTable({
+		positionGlobalFilter: 'left',
+		initialState: {
+			showGlobalFilter: true,
+		},
+		enableGlobalFilter: true,
+		enableColumnFilters: false,
+		enableDensityToggle: false,
+		enableFullScreenToggle: false,
+		enableHiding: false,
+		enableSorting: false,
 		columns,
 		data,
-		manualFiltering: true,
+		manualFiltering: false,
 		manualPagination: true,
 		muiToolbarAlertBannerProps: isError
 			? {
@@ -146,7 +192,7 @@ const Clubs = () => {
 			<>
 				<Box sx={{ display: 'flex', gap: '1rem' }}>
 					<Tooltip title="Edit">
-						<IconButton onClick={() => openModal(row)}>
+						<IconButton onClick={() => openModalEdit(row)}>
 							<EditIcon />
 						</IconButton>
 					</Tooltip>
@@ -170,14 +216,28 @@ const Clubs = () => {
 		position: relative;
 	`;
 
-	return (
-		<TableContainer>
-			<div>
-				<MaterialReactTable table={table} />
-				{/* <EditModal data={rowData} open={open} setOpen={setOpen} /> */}
-			</div>
-		</TableContainer>
-	);
+	if (isLoading) {
+		return <div>Loading...</div>;
+	} else {
+		return (
+			<TableContainer>
+				<div>
+					<MaterialReactTable table={table} />
+					<EditModal
+						data={rowData}
+						openEdit={openEdit}
+						setOpenEdit={setOpenEdit}
+					/>
+					<DeleteModal
+						data={rowData}
+						openDelete={openDelete}
+						setOpenDelete={setOpenDelete}
+						setIsRefetching={setIsRefetching}
+					/>
+				</div>
+			</TableContainer>
+		);
+	}
 };
 
 export default Clubs;

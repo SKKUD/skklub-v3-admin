@@ -6,26 +6,32 @@ import {
 	Modal,
 	Unstable_Grid2 as Grid,
 } from '@mui/material';
-import { AccountProfile } from '@/components/account/account-profile';
+import { AccountProfile } from './account-profile';
 import { AccountProfileDetails } from './account-profile-details';
 import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useState } from 'react';
+import axiosInterceptorInstance from '../../../axios/axiosInterceptorInstance';
 
-const EditModal = ({ data, open, setOpen }) => {
-	const [editedData, setEditedData] = useState(data);
+const EditModal = ({ data, openEdit, setOpenEdit }) => {
+	const [clubData, setClubData] = useState(null);
 
 	useEffect(() => {
-		setEditedData(data);
-	}, [data]);
+		if (openEdit) {
+			axiosInterceptorInstance.get(`/club/${data.id}`).then((response) => {
+				setClubData(response.data);
+			});
+		}
+	}, [openEdit]);
 
 	const handleClose = () => {
-		setOpen(false);
+		setOpenEdit(false);
 	};
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
-		setEditedData((prevData) => ({
+		setClubData((prevData) => ({
 			...prevData,
 			[name]: value,
 		}));
@@ -35,12 +41,18 @@ const EditModal = ({ data, open, setOpen }) => {
 		/* modal css */
 		width: 100%;
 		height: 100%;
-		padding: 5rem;
+		padding: 1rem;
 	`;
 
 	return (
-		<Modal open={open} onClose={handleClose}>
-			<ModalBox maxWidth="lg">
+		<Modal
+			open={openEdit}
+			onClose={handleClose}
+			sx={{
+				overflow: 'scroll',
+			}}
+		>
+			<ModalBox>
 				<Stack spacing={3}>
 					<div
 						style={{
@@ -61,11 +73,14 @@ const EditModal = ({ data, open, setOpen }) => {
 					<div>
 						<Grid container spacing={3}>
 							<Grid xs={12} md={6} lg={4}>
-								<AccountProfile />
+								<AccountProfile
+									url={clubData?.logo?.url}
+									clubId={clubData?.id}
+								/>
 							</Grid>
 							<Grid xs={12} md={6} lg={8}>
 								<AccountProfileDetails
-									data={editedData}
+									data={clubData}
 									handleInputChange={handleInputChange}
 								/>
 							</Grid>
@@ -78,5 +93,3 @@ const EditModal = ({ data, open, setOpen }) => {
 };
 
 export default EditModal;
-import { TextField } from '@mui/material';
-import React, { useState } from 'react';

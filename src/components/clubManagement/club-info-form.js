@@ -1,7 +1,13 @@
 import { useCallback, useState } from 'react';
 import { TextField, Unstable_Grid2 as Grid } from '@mui/material';
 
-const ClubInfoForm = ({ data, handleInputChange }) => {
+const ClubInfoForm = ({ values, setValues }) => {
+	const handleChange = useCallback((event) => {
+		setValues((prevState) => ({
+			...prevState,
+			[event.target.name]: event.target.value,
+		}));
+	}, []);
 
 	return (
 		<>
@@ -10,10 +16,10 @@ const ClubInfoForm = ({ data, handleInputChange }) => {
 					<TextField
 						fullWidth
 						label="동아리 이름"
-						name="clubName"
-						onChange={handleInputChange}
+						name="name"
+						onChange={handleChange}
 						required
-						value={data.name}
+						value={values?.name || ''}
 					/>
 				</Grid>
 				<Grid xs={12} md={6}>
@@ -22,35 +28,35 @@ const ClubInfoForm = ({ data, handleInputChange }) => {
 						label="분류"
 						name="briefActivityDescription"
 						helperText="활동 키워드를 입력해주세요"
-						onChange={handleInputChange}
+						onChange={handleChange}
 						required
-						value={data.briefActivityDescription}
+						value={values?.briefActivityDescription || ''}
 					/>
 				</Grid>
-				<Grid xs={12} md={6}>
+				<Grid xs={12} md={12}>
 					<TextField
 						fullWidth
 						label="활동 설명"
 						name="activityDescription"
 						helperText="동아리 활동에 대해 자세히 설명해주세요"
-						onChange={handleInputChange}
+						onChange={handleChange}
 						required
 						multiline
 						maxRows={6}
-						value={data.activityDescription}
+						value={values?.activityDescription || ''}
 					/>
 				</Grid>
-				<Grid xs={12} md={6}>
+				<Grid xs={12} md={12}>
 					<TextField
 						fullWidth
 						label="동아리 설명"
 						name="clubDescription"
 						helperText="동아리에 대해 자세히 설명해주세요"
-						onChange={handleInputChange}
+						onChange={handleChange}
 						required
 						multiline
 						maxRows={6}
-						value={data.clubDescription}
+						value={values?.clubDescription || ''}
 					/>
 				</Grid>
 				<Grid xs={12} md={6}>
@@ -58,10 +64,11 @@ const ClubInfoForm = ({ data, handleInputChange }) => {
 						fullWidth
 						label="설립연도"
 						name="establishDate"
-						onChange={handleInputChange}
-						value={data.establishDate}
+						onChange={handleChange}
+						value={values?.establishDate || ''}
 						placeholder="YYYY"
 						type="number"
+						maxLength={4}
 					/>
 				</Grid>
 				<Grid xs={12} md={6}>
@@ -69,8 +76,8 @@ const ClubInfoForm = ({ data, handleInputChange }) => {
 						fullWidth
 						label="한줄 소개"
 						name="headLine"
-						onChange={handleInputChange}
-						value={data.headLine}
+						onChange={handleChange}
+						value={values?.headLine || ''}
 					/>
 				</Grid>
 				<Grid xs={12} md={6}>
@@ -78,8 +85,8 @@ const ClubInfoForm = ({ data, handleInputChange }) => {
 						fullWidth
 						label="의무 활동 기간"
 						name="mandatoryActivatePeriod"
-						onChange={handleInputChange}
-						value={data.mandatoryActivatePeriod}
+						onChange={handleChange}
+						value={values?.mandatoryActivatePeriod || ''}
 					/>
 				</Grid>
 				<Grid xs={12} md={6}>
@@ -87,8 +94,8 @@ const ClubInfoForm = ({ data, handleInputChange }) => {
 						fullWidth
 						label="동아리 인원"
 						name="memberAmount"
-						onChange={handleInputChange}
-						value={data.memberAmount}
+						onChange={handleChange}
+						value={values?.memberAmount || ''}
 						type="number"
 					/>
 				</Grid>
@@ -97,8 +104,8 @@ const ClubInfoForm = ({ data, handleInputChange }) => {
 						fullWidth
 						label="정규 모임 시간"
 						name="regularMeetingTime"
-						onChange={handleInputChange}
-						value={data.regularMeetingTime}
+						onChange={handleChange}
+						value={values?.regularMeetingTime || ''}
 					/>
 				</Grid>
 				<Grid xs={12} md={6}>
@@ -106,8 +113,8 @@ const ClubInfoForm = ({ data, handleInputChange }) => {
 						fullWidth
 						label="동아리 방 위치"
 						name="roomLocation"
-						onChange={handleInputChange}
-						value={data.roomLocation}
+						onChange={handleChange}
+						value={values?.roomLocation || ''}
 					/>
 				</Grid>
 				<Grid xs={12} md={6}>
@@ -115,8 +122,8 @@ const ClubInfoForm = ({ data, handleInputChange }) => {
 						fullWidth
 						label="관련 사이트 주소 1"
 						name="webLink1"
-						onChange={handleInputChange}
-						value={data.webLink1}
+						onChange={handleChange}
+						value={values?.webLink1 || ''}
 					/>
 				</Grid>
 				<Grid xs={12} md={6}>
@@ -124,27 +131,10 @@ const ClubInfoForm = ({ data, handleInputChange }) => {
 						fullWidth
 						label="관련 사이트 주소 2"
 						name="webLink2"
-						onChange={handleInputChange}
-						value={data.webLink2}
+						onChange={handleChange}
+						value={values?.webLink2 || ''}
 					/>
 				</Grid>
-				{/* <Grid xs={12} md={6}>
-          <TextField
-            fullWidth
-            label="Select State"
-            name="state"
-            onChange={handleChange}
-            select
-            SelectProps={{ native: true }}
-            value={data.state}
-          >
-            {states.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </TextField>
-        </Grid> */}
 			</Grid>
 		</>
 	);

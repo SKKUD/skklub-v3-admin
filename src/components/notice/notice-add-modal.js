@@ -4,6 +4,7 @@ import CustomModal from '../common/custom-modal';
 import { useState } from 'react';
 import axios from 'axios';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import axiosInterceptorInstance from '../../../axios/axiosInterceptorInstance';
 
 const VisuallyHiddenInput = styled('input')({
 	clip: 'rect(0 0 0 0)',
@@ -51,7 +52,7 @@ const Label = styled(Box)`
 	border-radius: 10px;
 `;
 
-const NoticeAddModal = ({ handleClose, modalOpen }) => {
+const NoticeAddModal = ({ openAdd, setOpenAdd, setIsRefetching }) => {
 	const [noticeData, setNoticeData] = useState({
 		title: '',
 		content: '',
@@ -65,45 +66,45 @@ const NoticeAddModal = ({ handleClose, modalOpen }) => {
 		}));
 	};
 
-	const handleAddNotice = () => {
-		axios
-			.post('/notice', noticeData)
-			.then((response) => {
-				console.log(response.data);
-				handleClose();
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	};
-
 	const [files, setFiles] = useState([]);
-	const [createObjectURL, setCreateObjectURL] = useState(null);
 
 	const uploadToClient = (event) => {
-		const { files } = event.target;
-		if (files && files.length) {
-			setFiles(Array.from(files));
-			setCreateObjectURL(URL.createObjectURL(files[0]));
+		const fileList = event.target.files;
+		if (fileList.length !== null) {
+			setFiles((prevFiles) => [...prevFiles, ...fileList]);
 		}
 	};
 
-	const uploadToServer = async (event) => {
-		const body = new FormData();
-		body.append('file', files);
-		const response = await fetch('/api/file', {
-			method: 'POST',
-			body,
+	const handleAddNotice = (e) => {
+		e.preventDefault();
+		let dataForm = new FormData();
+		dataForm.append('title', noticeData.title);
+		dataForm.append('content', noticeData.content);
+		Array.from(files).forEach((file, i) => {
+			dataForm.append(`files`, file, file.name);
 		});
+		axiosInterceptorInstance
+			.post('/notice', dataForm, {
+				withCredentials: true,
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			})
+			.then((res) => {
+				console.log(res);
+				setOpenAdd(false);
+				setIsRefetching(true);
+			});
 	};
 
 	return (
 		<CustomModal
-			handleClose={handleClose}
-			modalOpen={modalOpen}
+			setModalOpen={setOpenAdd}
+			modalOpen={openAdd}
 			buttonTitle={'추가하기'}
 			files={files}
 			setFiles={setFiles}
+			handleClick={handleAddNotice}
 		>
 			<StyledHeader variant="h3">공지 추가</StyledHeader>
 
@@ -128,6 +129,7 @@ const NoticeAddModal = ({ handleClose, modalOpen }) => {
 
 				<TextField
 					label="내용"
+					required
 					name="content"
 					value={noticeData.content}
 					fullWidth
@@ -166,13 +168,11 @@ const NoticeAddModal = ({ handleClose, modalOpen }) => {
 					<Button
 						component="label"
 						variant="contained"
-						color='info'
+						color="info"
 						startIcon={<CloudUploadIcon />}
-						sx={
-							{
-								marginTop: '10px',
-							}
-						}
+						sx={{
+							marginTop: '10px',
+						}}
 					>
 						파일 업로드
 						<VisuallyHiddenInput

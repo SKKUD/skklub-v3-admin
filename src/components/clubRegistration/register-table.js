@@ -12,8 +12,11 @@ import {
 	IconButton,
 	Tooltip,
 } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import InfoIcon from '@mui/icons-material/Info';
+
 import EditModal from '@/components/clubManagement/edit-modal';
 import DeleteModal from '@/components/clubManagement/delete-modal';
 import { Edit } from '@mui/icons-material';
@@ -22,12 +25,9 @@ import {
 	MaterialReactTable,
 	useMaterialReactTable,
 } from 'material-react-table';
-import NoticeAddModal from './notice-add-modal';
-import NoticeDeleteModal from './notice-delete-modal';
-import NoticeInfoModal from './notice-info-modal';
-import formatTime from '@/utils/formatTime';
+import axiosInterceptorInstance from '../../../axios/axiosInterceptorInstance';
 
-const NoticeTable = () => {
+const RegisterTable = () => {
 	const [data, setData] = useState([]);
 	const [isError, setIsError] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -56,59 +56,26 @@ const NoticeTable = () => {
 				setIsRefetching(true);
 			}
 
-			if (globalFilter) {
-				try {
-					axios
-						.get('/notice/prevs/thumbnail', {
-							params: {
-								keyword: globalFilter,
-							},
-						})
-						.then((response) => {
-							setData(response.data.content);
-							setRowCount(response.data.totalElements);
-						});
-				} catch (error) {
-					setIsError(true);
-					console.error(error);
-					return;
-				}
-				setIsError(false);
-				setIsLoading(false);
-				setIsRefetching(false);
-			} else {
-				try {
-					const storageRole = localStorage.getItem('role');
-					switch (storageRole) {
-						case 'ROLE_MASTER':
-							setRole(null);
-							break;
-						default:
-							setRole(storageRole);
-							break;
-					}
-
-					axios
-						.get('/notice/prev', {
-							params: {
-								role: role,
-								page: pagination.pageIndex,
-								size: pagination.pageSize,
-							},
-						})
-						.then((response) => {
-							setData(response.data.content);
-							setRowCount(response.data.totalElements);
-						});
-				} catch (error) {
-					setIsError(true);
-					console.error(error);
-					return;
-				}
-				setIsError(false);
-				setIsLoading(false);
-				setIsRefetching(false);
+			try {
+				axiosInterceptorInstance
+					.get('/pending', {
+						params: {
+							page: pagination.pageIndex,
+							size: pagination.pageSize,
+						},
+					})
+					.then((response) => {
+						setData(response.data.content);
+						setRowCount(response.data.totalElements);
+					});
+			} catch (error) {
+				setIsError(true);
+				console.error(error);
+				return;
 			}
+			setIsError(false);
+			setIsLoading(false);
+			setIsRefetching(false);
 		};
 
 		fetchData();
@@ -123,8 +90,8 @@ const NoticeTable = () => {
 	const columns = useMemo(
 		() => [
 			{
-				header: '작성 날짜',
-				accessorKey: 'createdAt',
+				header: '동아리 이름',
+				accessorKey: 'clubName',
 				size: 50,
 				// date format
 				// Cell: ({ renderedCellValue }) => {
@@ -132,13 +99,13 @@ const NoticeTable = () => {
 				// },
 			},
 			{
-				header: '제목',
-				accessorKey: 'title',
+				header: '회장 이름',
+				accessorKey: 'presidentName',
 				size: 300,
 			},
 			{
-				header: '작성자',
-				accessorKey: 'writerName',
+				header: '회장 연락처',
+				accessorKey: 'presidentContact',
 				size: 50,
 			},
 		],
@@ -193,29 +160,26 @@ const NoticeTable = () => {
 		renderRowActions: ({ row, table }) => (
 			<>
 				<Box sx={{ display: 'flex', gap: '1rem' }}>
-					<Tooltip title="Edit">
-						<IconButton onClick={() => openModalEdit(row)}>
-							<EditIcon />
+					<Tooltip title="승낙">
+						<IconButton onClick={() => openModalEdit(row)} color="success">
+							<ThumbUpIcon />
 						</IconButton>
 					</Tooltip>
-					<Tooltip title="Delete">
+					<Tooltip title="거절">
 						<IconButton
 							color="error"
 							onClick={() => openDeleteConfirmModal(row)}
 						>
-							<DeleteIcon />
+							<ThumbDownIcon />
+						</IconButton>
+					</Tooltip>
+					<Tooltip title="자세히 보기">
+						<IconButton onClick={() => openModalEdit(row)}>
+							<InfoIcon />
 						</IconButton>
 					</Tooltip>
 				</Box>
 			</>
-		),
-		
-		renderTopToolbarCustomActions: () => (
-			<Box sx={{ display: 'flex', gap: '1rem', p: '4px' }}>
-				<Button variant="contained" color="primary" onClick={openModalAdd}>
-					공지 추가
-				</Button>
-			</Box>
 		),
 	});
 
@@ -230,26 +194,9 @@ const NoticeTable = () => {
 		<TableContainer>
 			<div>
 				<MaterialReactTable table={table} />
-				<NoticeAddModal
-					openAdd={openAdd}
-					setOpenAdd={setOpenAdd}
-					setIsRefetching={setIsRefetching}
-				/>
-				<NoticeInfoModal
-					data={rowData}
-					openEdit={openEdit}
-					setOpenEdit={setOpenEdit}
-					setIsRefetching={setIsRefetching}
-				/>
-				<NoticeDeleteModal
-					data={rowData}
-					openDelete={openDelete}
-					setOpenDelete={setOpenDelete}
-					setIsRefetching={setIsRefetching}
-				/>
 			</div>
 		</TableContainer>
 	);
 };
 
-export default NoticeTable;
+export default RegisterTable;

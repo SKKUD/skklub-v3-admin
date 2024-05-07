@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
-import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
+import LogoutIcon from '@mui/icons-material/Logout';
 import {
 	Box,
 	Button,
@@ -17,6 +16,7 @@ import { items } from '@/utils/sidebar-items';
 import { SideNavItem } from './side-nav-item';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
+import { useUserLogoutApi } from '@/hooks/use-user';
 
 const Container = styled(Box)`
 	display: flex;
@@ -64,10 +64,17 @@ const SideNav = (props) => {
 	const [username, setUsername] = useState('');
 	const [role, setRole] = useState('');
 
-  useEffect(() => {
-    setUsername(localStorage.getItem("username"));
-    setRole(localStorage.getItem("role")?.split("_")[1]);
-  }, []);
+	const [logout] = useUserLogoutApi();
+
+	useEffect(() => {
+		setUsername(localStorage.getItem('username'));
+		setRole(localStorage.getItem('role')?.split('_')[1]);
+	}, []);
+
+	const handleClick = (e) => {
+		e.preventDefault();
+		logout();
+	};
 
 	return (
 		<Drawer
@@ -88,27 +95,58 @@ const SideNav = (props) => {
 								{username ? username : '알수없음'}
 							</Typography>
 							<Typography color="neutral.400" variant="body2">
-								{role ? role : '알수없음'}
+								{role ? role : ''}
 							</Typography>
 						</div>
+						<LogoutIcon
+							sx={{
+								cursor: 'pointer',
+								width: 20,
+								height: 20,
+							}}
+							onClick={handleClick}
+						/>
 					</ProfileContainer>
 				</Box>
 				<Divider sx={{ borderColor: 'neutral.700' }} />
 				<Stack component="nav" spacing={0.5}>
 					{items.map((item) => {
 						const active = item.path ? pathname === item.path : false;
+						const role = localStorage.getItem('role');
 
-						return (
-							<SideNavItem
-								active={active.toString()}
-								disabled={item.disabled}
-								external={item.external}
-								icon={item.icon}
-								key={item.title}
-								path={item.path}
-								title={item.title}
-							/>
-						);
+						if (
+							role === 'ROLE_MASTER' ||
+							role === 'ROLE_ADMIN_SUWON_CENTRAL' ||
+							role === 'ROLE_ADMIN_SEOUL_CENTRAL'
+						) {
+							if (item.admin === 1 || item.admin === 0) {
+								return (
+									<SideNavItem
+										active={active.toString()}
+										disabled={item.disabled}
+										external={item.external}
+										icon={item.icon}
+										key={item.title}
+										path={item.path}
+										title={item.title}
+									/>
+								);
+							}
+						} else {
+							if (item.admin === 2 || item.admin === 0) {
+								return (
+									<SideNavItem
+										active={active.toString()}
+										disabled={item.disabled}
+										external={item.external}
+										icon={item.icon}
+										key={item.title}
+										path={item.path}
+										title={item.title}
+									/>
+								);
+							}
+						}
 					})}
 				</Stack>
 			</Container>

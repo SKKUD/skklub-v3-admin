@@ -2,25 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { TextField, Unstable_Grid2 as Grid } from "@mui/material";
 import { useClubInfoApi } from "@/hooks/use-user";
 
-// const states = [
-//   {
-//     value: "alabama",
-//     label: "Alabama",
-//   },
-//   {
-//     value: "new-york",
-//     label: "New York",
-//   },
-//   {
-//     value: "san-francisco",
-//     label: "San Francisco",
-//   },
-//   {
-//     value: "los-angeles",
-//     label: "Los Angeles",
-//   },
-// ];
-
 const ClubInfoForm = ({ values, setValues }) => {
   const handleChange = useCallback((event) => {
     setValues((prevState) => ({

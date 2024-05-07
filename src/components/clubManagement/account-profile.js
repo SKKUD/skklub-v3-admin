@@ -10,6 +10,7 @@ import {
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { useRef } from 'react';
+import axiosInterceptorInstance from '../../../axios/axiosInterceptorInstance';
 
 const ProfileCardContent = styled(CardContent)`
 	display: flex;
@@ -20,7 +21,7 @@ const ProfileCardContent = styled(CardContent)`
 	}
 `;
 
-export const AccountProfile = () => {
+export const AccountProfile = ({ url, clubId }) => {
 	const inputRef = useRef(null);
 
 	const handleFileUploadClick = () => {
@@ -30,10 +31,25 @@ export const AccountProfile = () => {
 	};
 
 	const handleFileUpload = (e) => {
-		const selectedFile = e.target.files[0];
+		let data = new FormData();
+		let selectedFile = e.target.files[0];
+		data.append('logo', selectedFile);
+
 		if (selectedFile) {
 			if (confirm('선택한 사진으로 동아리 썸네일을 수정하시겠습니까?')) {
-				//submit
+				axiosInterceptorInstance
+					.post(`/club/${clubId}/logo`, data, {
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+					})
+					.then(() => {
+						alert('사진이 성공적으로 수정되었습니다.');
+					})
+					.catch((err) => {
+						console.log(err);
+						alert('사진 수정에 실패했습니다.');
+					});
 			}
 		}
 	};
@@ -42,10 +58,12 @@ export const AccountProfile = () => {
 		<Card>
 			<ProfileCardContent>
 				<Image
-					src="/assets/profile.jpeg"
+					src={url}
 					alt="club image"
 					width={220}
 					height={220}
+					placeholder="blur"
+					blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
 				/>
 			</ProfileCardContent>
 			<Divider />

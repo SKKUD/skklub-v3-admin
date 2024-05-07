@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
 	Box,
 	Button,
@@ -14,8 +14,11 @@ import {
 	Unstable_Grid2 as Grid,
 } from '@mui/material';
 import ClubInfoForm from './club-info-form';
-import ClubSettings from './club-settings';
-import { useEditClubInfoApiAdmin } from '@/hooks/use-user';
+import {
+	useClubInfoApi,
+	useClubRegisterApi,
+	useEditClubInfoApi,
+} from '@/hooks/use-user';
 
 function CustomTabPanel(props) {
 	const { children, value, index, ...other } = props;
@@ -28,16 +31,12 @@ function CustomTabPanel(props) {
 			aria-labelledby={`simple-tab-${index}`}
 			{...other}
 		>
-			{value === index && (
-				<Box sx={{ p: 3 }}>
-					<Typography>{children}</Typography>
-				</Box>
-			)}
+			{value === index && <Box sx={{ p: 3 }}>{children}</Box>}
 		</div>
 	);
 }
 
-export const AccountProfileDetails = (props) => {
+export const AccountProfileDetails = () => {
 	const [tabValue, setTabValue] = useState(0);
 
 	const handleTabChange = (event, newValue) => {
@@ -46,15 +45,13 @@ export const AccountProfileDetails = (props) => {
 
 	// 동아리 정보, 모집 정보 state
 	const [infoValues, setInfoValues] = useState({});
-	useEffect(() => {
-		setInfoValues(props.data);
-	}, [props.data]);
 
-	const [editClubInfoAdmin] = useEditClubInfoApiAdmin();
+	// 수정 submit
+	const [registerClub] = useClubRegisterApi();
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		if (tabValue === 0) {
-			editClubInfoAdmin(props.data?.id, infoValues);
+			registerClub(infoValues);
 		}
 	};
 
@@ -77,27 +74,18 @@ export const AccountProfileDetails = (props) => {
 								aria-label="basic tabs example"
 							>
 								<Tab label="동아리 정보" />
-								<Tab label="동아리 설정" />
 							</Tabs>
 						</Box>
 						<CustomTabPanel value={tabValue} index={0}>
 							<ClubInfoForm values={infoValues} setValues={setInfoValues} />
 						</CustomTabPanel>
-						<CustomTabPanel value={tabValue} index={1}>
-							<ClubSettings
-								clubType={props.data?.clubType}
-								clubId={props.data?.id}
-							/>
-						</CustomTabPanel>
 					</Box>
 				</CardContent>
 				<Divider />
 				<CardActions sx={{ justifyContent: 'flex-end', padding: '15px' }}>
-					{tabValue === 0 ? (
-						<Button variant="contained" onClick={handleSubmit}>
-							수정사항 저장
-						</Button>
-					) : null}
+					<Button variant="contained" onClick={handleSubmit}>
+						동아리 생성
+					</Button>
 				</CardActions>
 			</Card>
 		</form>
