@@ -96,6 +96,7 @@ const Clubs = () => {
 						.get('/club/prev', {
 							params: {
 								campus: campus,
+								clubType: '중앙동아리',
 								page: pagination.pageIndex,
 								size: pagination.pageSize,
 							},

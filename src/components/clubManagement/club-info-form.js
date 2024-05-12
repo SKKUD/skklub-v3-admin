@@ -25,9 +25,9 @@ const ClubInfoForm = ({ values, setValues }) => {
 				<Grid xs={12} md={6}>
 					<TextField
 						fullWidth
-						label="분류"
+						label="활동 키워드 단어"
 						name="briefActivityDescription"
-						helperText="활동 키워드를 입력해주세요"
+						helperText="활동 키워드 단어를 입력해주세요 (봉사, 게임, 등등)"
 						onChange={handleChange}
 						required
 						value={values?.briefActivityDescription || ''}
@@ -92,11 +92,19 @@ const ClubInfoForm = ({ values, setValues }) => {
 				<Grid xs={12} md={6}>
 					<TextField
 						fullWidth
-						label="동아리 인원"
-						name="memberAmount"
+						label="대표자 이름"
+						name="presidentName"
 						onChange={handleChange}
-						value={values?.memberAmount || ''}
-						type="number"
+						value={values?.presidentName || ''}
+					/>
+				</Grid>
+				<Grid xs={12} md={6}>
+					<TextField
+						fullWidth
+						label="대표자 연락처"
+						name="presidentContact"
+						onChange={handleChange}
+						value={values?.presidentContact || ''}
 					/>
 				</Grid>
 				<Grid xs={12} md={6}>
@@ -106,6 +114,7 @@ const ClubInfoForm = ({ values, setValues }) => {
 						name="regularMeetingTime"
 						onChange={handleChange}
 						value={values?.regularMeetingTime || ''}
+						multiline
 					/>
 				</Grid>
 				<Grid xs={12} md={6}>
