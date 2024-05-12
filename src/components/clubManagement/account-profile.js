@@ -11,6 +11,7 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import axiosInterceptorInstance from "../../../axios/axiosInterceptorInstance";
+import imageCompression from "browser-image-compression";
 
 const ProfileCardContent = styled(CardContent)`
     display: flex;
@@ -20,6 +21,20 @@ const ProfileCardContent = styled(CardContent)`
         border-radius: 20px;
     }
 `;
+
+async function compressImage(imageFile) {
+    const options = {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 500,
+        useWebWorker: true,
+    };
+    try {
+        const compressedFile = await imageCompression(imageFile, options);
+        return compressedFile;
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export const AccountProfile = ({ url, clubId }) => {
     const inputRef = useRef(null);
@@ -31,10 +46,12 @@ export const AccountProfile = ({ url, clubId }) => {
         }
     };
 
-    const handleFileUpload = (e) => {
+    const handleFileUpload = async (e) => {
         let data = new FormData();
         let selectedFile = e.target.files[0];
-        data.append("logo", selectedFile);
+        let compressedBlob = await compressImage(selectedFile);
+        let compressedFile = new File([compressedBlob], selectedFile.name);
+        data.append("logo", compressedFile);
 
         if (selectedFile) {
             if (confirm("선택한 사진으로 동아리 썸네일을 수정하시겠습니까?")) {
