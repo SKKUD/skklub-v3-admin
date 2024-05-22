@@ -17,7 +17,8 @@ import RegisterTable from '@/components/clubRegistration/register-table';
 const Registration = () => {
 	return (
 		<>
-			<RegisterTable />
+			<AccountProfile />
+			<AccountProfileDetails />
 		</>
 	);
 };

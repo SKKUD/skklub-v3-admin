@@ -9,7 +9,9 @@ import {
 	Stack as MuiStack,
 	SvgIcon,
 	Typography,
+	Tooltip,
 	useMediaQuery,
+	IconButton,
 } from '@mui/material';
 import Image from 'next/image';
 import { items } from '@/utils/sidebar-items';
@@ -17,6 +19,7 @@ import { SideNavItem } from './side-nav-item';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useUserLogoutApi } from '@/hooks/use-user';
+import { formatMs } from '@/utils/formatMs';
 
 const Container = styled(Box)`
 	display: flex;
@@ -34,7 +37,6 @@ const ProfileContainer = styled(Box)`
 	align-items: center;
 	background-color: rgba(255, 255, 255, 0.04);
 	border-radius: 5px;
-	cursor: pointer;
 	display: flex;
 	justify-content: space-between;
 	margin-top: 16px;
@@ -95,17 +97,21 @@ const SideNav = (props) => {
 								{username ? username : '알수없음'}
 							</Typography>
 							<Typography color="neutral.400" variant="body2">
-								{role ? role : ''}
+								남은 시간: {formatMs(props.sessionTime)}
 							</Typography>
 						</div>
-						<LogoutIcon
-							sx={{
-								cursor: 'pointer',
-								width: 20,
-								height: 20,
-							}}
-							onClick={handleClick}
-						/>
+						<Tooltip title="로그아웃" arrow>
+							<IconButton onClick={handleClick}>
+								<LogoutIcon
+									color="primary"
+									sx={{
+										cursor: 'pointer',
+										width: 20,
+										height: 20,
+									}}
+								/>
+							</IconButton>
+						</Tooltip>
 					</ProfileContainer>
 				</Box>
 				<Divider sx={{ borderColor: 'neutral.700' }} />

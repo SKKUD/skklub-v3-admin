@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { LogoDev } from '@mui/icons-material';
 import axiosInterceptorInstance from '../../../axios/axiosInterceptorInstance';
@@ -23,8 +23,23 @@ const ProfileCardContent = styled(CardContent)`
 	}
 `;
 
+async function compressImage(imageFile) {
+	const options = {
+		maxSizeMB: 0.5,
+		maxWidthOrHeight: 500,
+		useWebWorker: true,
+	};
+	try {
+		const compressedFile = await imageCompression(imageFile, options);
+		return compressedFile;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 export const AccountProfile = ({ url, clubId }) => {
 	const inputRef = useRef(null);
+	const [imageUrl, setImageUrl] = useState('/assets/profile.jpeg');
 
 	const handleFileUploadClick = () => {
 		if (inputRef.current) {
@@ -32,10 +47,16 @@ export const AccountProfile = ({ url, clubId }) => {
 		}
 	};
 
-	const handleFileUpload = (e) => {
+	useEffect(() => {
+		setImageUrl(url);
+	}, [url]);
+
+	const handleFileUpload = async (e) => {
 		let data = new FormData();
 		let selectedFile = e.target.files[0];
-		data.append('logo', selectedFile);
+		let compressedBlob = await compressImage(selectedFile);
+		let compressedFile = new File([compressedBlob], selectedFile.name);
+		data.append('logo', compressedFile);
 
 		if (selectedFile) {
 			if (confirm('선택한 사진으로 동아리 썸네일을 수정하시겠습니까?')) {
@@ -45,7 +66,11 @@ export const AccountProfile = ({ url, clubId }) => {
 							'Content-Type': 'multipart/form-data',
 						},
 					})
-					.then(() => {
+					.then((resp) => {
+						const image_base =
+							'https://s3.ap-northeast-2.amazonaws.com/skklub.develop/';
+						url = image_base + resp.data.logoSavedName;
+						setImageUrl(url);
 						alert('사진이 성공적으로 수정되었습니다.');
 					})
 					.catch((err) => {
@@ -59,14 +84,17 @@ export const AccountProfile = ({ url, clubId }) => {
 	return (
 		<Card>
 			<ProfileCardContent>
-				<Image
-					src={url}
-					alt="club image"
-					width={220}
-					height={220}
-					placeholder="blur"
-					blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
-				/>
+				{imageUrl ? (
+					<Image src={imageUrl} alt="club image" width={220} height={220} />
+				) : (
+					<Image
+						src={'/assets/profile.jpeg'}
+						alt="club image"
+						width={220}
+						height={220}
+						priority={true}
+					/>
+				)}
 			</ProfileCardContent>
 			<Divider />
 

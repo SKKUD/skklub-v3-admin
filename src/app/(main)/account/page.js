@@ -11,22 +11,34 @@ import {
 import { AccountProfile } from '@/components/account/account-profile';
 import { AccountProfileDetails } from '@/components/account/account-profile-details';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosInterceptorInstance from '../../../../axios/axiosInterceptorInstance';
 
 const Account = () => {
 	const [username, setUsername] = useState('');
+	const [clubData, setClubData] = useState(null);
 
 	useEffect(() => {
 		setUsername(localStorage.getItem('username'));
-		axios
+		axiosInterceptorInstance
 			.get(`/club/my`)
 			.then((res) => {
-				console.log(res);
+				setClubData(res.data);
+				localStorage.setItem('presidentContact', res.data.presidentContact);
+				localStorage.setItem('presidentName', res.data.presidentName);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	}, []);
+
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
+		setClubData((prevData) => ({
+			...prevData,
+			[name]: value,
+		}));
+	};
+
 	return (
 		<>
 			<Head>
@@ -54,10 +66,13 @@ const Account = () => {
 						<div>
 							<Grid container spacing={3}>
 								<Grid xs={12} md={6} lg={4}>
-									<AccountProfile />
+									<AccountProfile
+										url={clubData?.logo?.url}
+										clubId={clubData?.id}
+									/>
 								</Grid>
 								<Grid xs={12} md={6} lg={8}>
-									<AccountProfileDetails />
+									<AccountProfileDetails clubData={clubData} />
 								</Grid>
 							</Grid>
 						</div>

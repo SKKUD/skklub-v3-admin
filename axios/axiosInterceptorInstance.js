@@ -25,13 +25,12 @@ axiosInterceptorInstance.interceptors.request.use(
 // Response interceptor
 axiosInterceptorInstance.interceptors.response.use(
 	(response) => {
-		// if response is 401, send to refresh api
 		return response;
 	},
 	(error) => {
 		// Handle response errors here
 		if (error.response.status === 401) {
-			// Redirect to login page
+			// redirect to index page
 			window.location.href = '/';
 		}
 		return Promise.reject(error);

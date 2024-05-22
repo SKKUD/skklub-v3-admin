@@ -54,7 +54,7 @@ export const AccountProfileDetails = (props) => {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		if (tabValue === 0) {
-			editClubInfoAdmin(props.data?.id, infoValues);
+			editClubInfoAdmin(infoValues);
 		}
 	};
 

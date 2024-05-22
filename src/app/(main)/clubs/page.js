@@ -10,6 +10,8 @@ import {
 	DialogContent,
 	DialogTitle,
 	IconButton,
+	ToggleButton,
+	ToggleButtonGroup,
 	Tooltip,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -41,7 +43,8 @@ const Clubs = () => {
 	const [globalFilter, setGlobalFilter] = useState('');
 	const [rowData, setRowData] = useState(null);
 
-	const [campus, setCampus] = useState('');
+	const [campus, setCampus] = useState('명륜');
+	const [clubType, setClubType] = useState('중앙동아리');
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -75,7 +78,6 @@ const Clubs = () => {
 				try {
 					switch (localStorage.getItem('role')) {
 						case 'ROLE_MASTER':
-							setCampus('명륜');
 							break;
 						case 'ROLE_ADMIN_SUWON_CENTRAL':
 							setCampus('율전');
@@ -96,7 +98,7 @@ const Clubs = () => {
 						.get('/club/prev', {
 							params: {
 								campus: campus,
-								clubType: '중앙동아리',
+								clubType: clubType,
 								page: pagination.pageIndex,
 								size: pagination.pageSize,
 							},
@@ -122,6 +124,7 @@ const Clubs = () => {
 		globalFilter,
 		pagination.pageSize,
 		campus,
+		clubType,
 		isRefetching,
 	]);
 
@@ -217,11 +220,54 @@ const Clubs = () => {
 		position: relative;
 	`;
 
+	const handleChangeType = (event, newType) => {
+		setClubType(newType);
+	};
+
+	const handleChangeCampus = (event, newType) => {
+		setCampus(newType);
+	};
+
 	if (isLoading) {
 		return <div>Loading...</div>;
 	} else {
 		return (
 			<TableContainer>
+				{localStorage.getItem('role') === 'ROLE_MASTER' ? (
+					<div>
+						<ToggleButtonGroup
+							color="primary"
+							value={campus}
+							exclusive
+							onChange={handleChangeCampus}
+							aria-label="campusType"
+							sx={{
+								marginBottom: '10px',
+							}}
+						>
+							<ToggleButton value="명륜">명륜</ToggleButton>
+							<ToggleButton value="율전">율전</ToggleButton>
+						</ToggleButtonGroup>
+					</div>
+				) : (
+					''
+				)}
+				<div>
+					<ToggleButtonGroup
+						color="primary"
+						value={clubType}
+						exclusive
+						onChange={handleChangeType}
+						aria-label="clubType"
+						sx={{
+							marginBottom: '10px',
+						}}
+					>
+						<ToggleButton value="중앙동아리">중앙동아리</ToggleButton>
+						<ToggleButton value="준중앙동아리">준중앙동아리</ToggleButton>
+					</ToggleButtonGroup>
+				</div>
+
 				<div>
 					<MaterialReactTable table={table} />
 					<EditModal

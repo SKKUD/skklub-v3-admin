@@ -36,19 +36,6 @@ const ClubInfoForm = ({ values, setValues }) => {
 				<Grid xs={12} md={12}>
 					<TextField
 						fullWidth
-						label="활동 설명"
-						name="activityDescription"
-						helperText="동아리 활동에 대해 자세히 설명해주세요"
-						onChange={handleChange}
-						required
-						multiline
-						maxRows={6}
-						value={values?.activityDescription || ''}
-					/>
-				</Grid>
-				<Grid xs={12} md={12}>
-					<TextField
-						fullWidth
 						label="동아리 설명"
 						name="clubDescription"
 						helperText="동아리에 대해 자세히 설명해주세요"
@@ -57,6 +44,19 @@ const ClubInfoForm = ({ values, setValues }) => {
 						multiline
 						maxRows={6}
 						value={values?.clubDescription || ''}
+					/>
+				</Grid>
+				<Grid xs={12} md={12}>
+					<TextField
+						fullWidth
+						label="활동 설명"
+						name="activityDescription"
+						helperText="동아리 활동에 대해 자세히 설명해주세요"
+						onChange={handleChange}
+						required
+						multiline
+						maxRows={6}
+						value={values?.activityDescription || ''}
 					/>
 				</Grid>
 				<Grid xs={12} md={6}>
@@ -87,24 +87,6 @@ const ClubInfoForm = ({ values, setValues }) => {
 						name="mandatoryActivatePeriod"
 						onChange={handleChange}
 						value={values?.mandatoryActivatePeriod || ''}
-					/>
-				</Grid>
-				<Grid xs={12} md={6}>
-					<TextField
-						fullWidth
-						label="대표자 이름"
-						name="presidentName"
-						onChange={handleChange}
-						value={values?.presidentName || ''}
-					/>
-				</Grid>
-				<Grid xs={12} md={6}>
-					<TextField
-						fullWidth
-						label="대표자 연락처"
-						name="presidentContact"
-						onChange={handleChange}
-						value={values?.presidentContact || ''}
 					/>
 				</Grid>
 				<Grid xs={12} md={6}>

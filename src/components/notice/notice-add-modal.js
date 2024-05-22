@@ -5,6 +5,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axiosInterceptorInstance from '../../../axios/axiosInterceptorInstance';
+import Image from 'next/image';
 
 const VisuallyHiddenInput = styled('input')({
 	clip: 'rect(0 0 0 0)',
@@ -52,11 +53,28 @@ const Label = styled(Box)`
 	border-radius: 10px;
 `;
 
+const ThumbnailWrap = styled(Box)`
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 20px;
+	> img {
+		border-radius: 25%;
+	}
+`;
+
+const ThumbailImage = styled(Image)`
+	border-radius: 25%;
+	margin-bottom: 10px;
+`;
+
 const NoticeAddModal = ({ openAdd, setOpenAdd, setIsRefetching }) => {
 	const [noticeData, setNoticeData] = useState({
 		title: '',
 		content: '',
 	});
+	const [thumbnail, setThumbnail] = useState('/assets/profile.jpeg');
 
 	const handleInputChange = (event) => {
 		const { name, value } = event.target;
@@ -115,6 +133,27 @@ const NoticeAddModal = ({ openAdd, setOpenAdd, setIsRefetching }) => {
 			</Warn>
 
 			<InfoWrap>
+				<ThumbnailWrap>
+					<Image
+						src={thumbnail}
+						alt="club image"
+						width={200}
+						height={200}
+						placeholder="blur"
+						blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
+					/>
+					{/* change image button */}
+					<Button
+						variant="contained"
+						component="label"
+						sx={{
+							marginTop: '10px',
+						}}
+					>
+						이미지 변경
+						<input type="file" hidden />
+					</Button>
+				</ThumbnailWrap>
 				<TextField
 					value={noticeData.title}
 					fullWidth

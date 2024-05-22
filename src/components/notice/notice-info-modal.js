@@ -72,7 +72,7 @@ const NoticeInfoModal = ({ data, setOpenEdit, openEdit }) => {
 
 	const handleClick = () => {
 		axiosInterceptorInstance
-			.post(`/notice/${noticeId}`, noticeData)
+			.post(`/notice/${data.noticeId}`, noticeData)
 			.then((response) => {
 				console.log(response);
 				setOpenEdit(false);
@@ -113,7 +113,13 @@ const NoticeInfoModal = ({ data, setOpenEdit, openEdit }) => {
 						blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAFklEQVR42mN8//HLfwYiAOOoQvoqBABbWyZJf74GZgAAAABJRU5ErkJggg=="
 					/>
 					{/* change image button */}
-					<Button variant="contained" component="label">
+					<Button
+						variant="contained"
+						component="label"
+						sx={{
+							marginTop: '10px',
+						}}
+					>
 						이미지 변경
 						<input type="file" hidden />
 					</Button>
@@ -163,10 +169,10 @@ const NoticeInfoModal = ({ data, setOpenEdit, openEdit }) => {
 							</div>
 						))}
 					</div>
-					<Button variant="contained" component="label">
+					{/* <Button variant="contained" component="label">
 						파일 추가
 						<input type="file" hidden />
-					</Button>
+					</Button> */}
 				</div>
 			</InfoWrap>
 		</CustomModal>

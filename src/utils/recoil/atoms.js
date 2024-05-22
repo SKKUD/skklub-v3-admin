@@ -17,3 +17,16 @@ export const UserState = atom({
 	},
 	effects_UNSTABLE: [persistAtom],
 });
+
+// session time (30 minutes)
+export const SessionTimeState = atom({
+	key: 'SessionTimeState',
+	default: 1800000,
+	effects_UNSTABLE: [persistAtom],
+});
+
+export const SessionDialogState = atom({
+	key: 'SessionDialogState',
+	default: false,
+	effects_UNSTABLE: [persistAtom],
+});

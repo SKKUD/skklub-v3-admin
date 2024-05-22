@@ -79,7 +79,7 @@ const Home = () => {
 									onChange={(e) => setID(e.target.value)}
 									type="ID"
 									value={id}
-									inputProps={{ maxLength: 14 }}
+
 								/>
 								<TextField
 									fullWidth
@@ -88,7 +88,7 @@ const Home = () => {
 									onChange={(e) => setPW(e.target.value)}
 									type="password"
 									value={pw}
-									inputProps={{ maxLength: 14 }}
+
 								/>
 							</Stack>
 

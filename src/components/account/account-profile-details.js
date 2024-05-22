@@ -32,7 +32,7 @@ function CustomTabPanel(props) {
 	);
 }
 
-export const AccountProfileDetails = () => {
+export const AccountProfileDetails = ({ clubData }) => {
 	const [tabValue, setTabValue] = useState(0);
 
 	const handleTabChange = (event, newValue) => {
@@ -40,11 +40,10 @@ export const AccountProfileDetails = () => {
 	};
 
 	// 동아리 정보, 모집 정보 state
-	const [clubInfo] = useClubInfoApi();
 	const [infoValues, setInfoValues] = useState({});
 	useEffect(() => {
-		setInfoValues(clubInfo);
-	}, [clubInfo]);
+		setInfoValues(clubData);
+	}, [clubData]);
 
 	// 수정 submit
 	const [editClubInfo] = useEditClubInfoApi();

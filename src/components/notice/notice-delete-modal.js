@@ -22,9 +22,10 @@ const NoticeDeleteModal = ({
 	};
 
 	const handleDelete = () => {
-		axiosInterceptorInstance.delete(`/notice/${data.noticeId}`);
-		setOpenDelete(false);
-		setIsRefetching(true);
+		axiosInterceptorInstance.delete(`/notice/${data.noticeId}`).then(() => {
+			setOpenDelete(false);
+			setIsRefetching(true);
+		});
 	};
 
 	const ModalBox = styled.div`
